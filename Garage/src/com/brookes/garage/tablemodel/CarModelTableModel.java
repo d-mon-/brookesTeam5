@@ -15,7 +15,7 @@ public class CarModelTableModel extends AbstractTableModel {
 
 	// Related Model entity DAO
 	private ModelDao modelDao;
-	// ArrayList of Customer to populate the table
+	// ArrayList of Model to populate the table
 	public List<Model> data = new ArrayList<Model>();
 	// The columns titles
 	private final String[] titles = { "Model Name" };

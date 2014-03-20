@@ -13,9 +13,9 @@ public class BrandTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 
-	// Related Customer entity DAO
+	// Related Brand entity DAO
 	private BrandDao brandDao;
-	// ArrayList of Customer to populate the table
+	// ArrayList of Brand to populate the table
 	public List<Brand> data = new ArrayList<Brand>();
 	// The columns titles
 	private final String[] titles = { "Brand Name" };
