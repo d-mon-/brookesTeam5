@@ -1,13 +1,13 @@
 ----------------------------------------------------------------
-Thu Mar 20 13:05:21 GMT 2014:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.1.1 - (1458268): instance a816c00e-0144-df98-905f-00000612ccb8 
-on database directory /Users/Myotis/Desktop/SimpleDB with class loader sun.misc.Launcher$AppClassLoader@781fb069 
-Loaded from file:/Users/Myotis/Documents/eclipse_workspace/Garage/lib/derby.jar
+Thu Mar 20 15:06:32 GMT 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.1.1 - (1458268): instance a816c00e-0144-e007-8220-0000054bbc68 
+on database directory C:\Users\Jonathan\Desktop\SimpleDB with class loader sun.misc.Launcher$AppClassLoader@214c4ac9 
+Loaded from file:/C:/Users/Jonathan/git/brookesTeam5/Garage/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.7.0_45-b18
-user.dir=/Users/Myotis/Documents/eclipse_workspace/Garage
-os.name=Mac OS X
-os.arch=x86_64
-os.version=10.9.2
+java.runtime.version=1.7.0-b147
+user.dir=C:\Users\Jonathan\git\brookesTeam5\Garage
+os.name=Windows 7
+os.arch=amd64
+os.version=6.1
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''

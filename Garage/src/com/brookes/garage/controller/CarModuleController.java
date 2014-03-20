@@ -10,13 +10,14 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import org.apache.derby.tools.sysinfo;
-
 import com.brookes.garage.dao.BrandDao;
 import com.brookes.garage.dao.DaoFactory;
+import com.brookes.garage.dao.ModelDao;
 import com.brookes.garage.entity.Brand;
+import com.brookes.garage.entity.Model;
 import com.brookes.garage.frame.BrandFormFrame;
 import com.brookes.garage.frame.CarListFrame;
+import com.brookes.garage.frame.ModelFormFrame;
 import com.brookes.garage.tablemodel.BrandTableModel;
 import com.brookes.garage.tablemodel.CarModelTableModel;
 
@@ -29,10 +30,12 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 
 		private CarListFrame carListFrame;
 		private BrandFormFrame brandForm;
+		private ModelFormFrame modelForm;
 
 		private BrandDao brandDao = DaoFactory.getBrandDao();
 		private BrandTableModel brandTableModel;
 		
+		private ModelDao modelDao = DaoFactory.getModelDao();
 		private CarModelTableModel carModelTableModel;
 
 		public CarModuleController() {
@@ -105,19 +108,18 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 			} else if (brandForm != null && e.getSource() == brandForm.saveButton) {
 				this.saveBrand();
 			} else if (e.getSource() == carListFrame.modelCreateButton) {
-				//this.showBrandCreationForm();
+				this.showModelCreationForm();
 			} else if (e.getSource() == carListFrame.modelEditButton) {
-				//this.showBrandEditionForm();
+				this.showModelEditionForm();
 			} else if (e.getSource() == carListFrame.modelDeleteButton) {
-				//this.deleteBrand();
-			} 
-			//else if (brandForm != null && e.getSource() == brandForm.saveButton) {
-			//	this.saveBrand();
-			//}	
+				this.deleteModel();
+			} else if (modelForm != null && e.getSource() == modelForm.saveButton) {
+				this.saveModel();
+			}	
 		}
 		
 		/**
-		 * Display the customer creation form in a new window Listen to the action
+		 * Display the brand creation form in a new window Listen to the action
 		 * triggered by the save button
 		 */
 		public void showBrandCreationForm() {
@@ -136,7 +138,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 			brandForm.saveButton.addActionListener(this);
 
 			// We get the index of the selected row and retrieve the corresponding
-			// Customer entity
+			// brand entity
 			int rowIndex = carListFrame.brandTable.getSelectedRow();
 			Brand brand = brandTableModel.data.get(rowIndex);
 			brandForm.setBrand(brand);
@@ -148,7 +150,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 		}
 		
 		/**
-		 * Triggered when the user wish to save a customer in either the creation or
+		 * Triggered when the user wishes to save a brand in either the creation or
 		 * edition form
 		 */
 		public void saveBrand() {
@@ -197,6 +199,96 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 			brandTableModel.removeBrand(rowIndex);
 			brandDao.removeBrand(brand);
 		}
+
+		/**
+		 * Display the model creation form in a new window Listen to the action
+		 * triggered by the save button
+		 */
+		public void showModelCreationForm() {
+			modelForm = new ModelFormFrame();
+			modelForm.saveButton.addActionListener(this);
+
+			modelForm.setVisible(true);
+		}		
+		
+		/**
+		 * Displays the model edition form in a new window It consists of the
+		 * same frame as for creation but already filled-in
+		 */
+		public void showModelEditionForm() {
+			modelForm = new ModelFormFrame();
+			modelForm.saveButton.addActionListener(this);
+
+			// We get the index of the selected row and retrieve the corresponding
+			// model entity
+			int rowIndex = carListFrame.modelTable.getSelectedRow();
+			Model model = carModelTableModel.data.get(rowIndex);
+			modelForm.setModel(model);
+			
+			// We fill-in the form
+			modelForm.nameField.setText(model.getName());
+
+			modelForm.setVisible(true);
+		}
+		
+		/**
+		 * Triggered when the user wishes to save a model in either the creation or
+		 * edition form
+		 */
+		public void saveModel() {
+			String name = modelForm.nameField.getText();
+
+			if (name.length() > 0) {
+				// The Name field must contain a value
+
+				if (modelForm.getModel() != null) {
+					// The form contains an existing model
+					// This was an edition form
+					// We update the values in the existing model and update it
+					Model model = modelForm.getModel();
+					model.setName(name);
+
+					// We update the database and our table model
+					modelDao.updateModel(model);
+					carModelTableModel.updateModel(model);
+				} else {
+					// The form was a creation form
+					// We create a new model with the values and save it
+					Model model= new Model();
+					model.setName(name);
+
+					// We add it to the database and our table model
+					modelDao.addModel(model);
+					carModelTableModel.addModel(model);
+				}
+
+				// We close the windows
+				modelForm.dispose();
+			} else {
+				// Not every fields contain a value so we display a message
+				modelForm.noEmptyLabel.setVisible(true);
+			}
+		}
+
+		/**
+		 * Triggered when the user have selected a row and clicked the delete button for Brand table
+		 */
+		public void deleteModel() {
+			// We get the currently selected row index, get the model
+			// and remove it from the table model and the database
+			int rowIndex = carListFrame.modelTable.getSelectedRow();
+			Model model = carModelTableModel.data.get(rowIndex);
+			carModelTableModel.removeModel(rowIndex);
+			modelDao.removeModel(model);
+		}
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		/**
 		 * The row selected by the user has changed
