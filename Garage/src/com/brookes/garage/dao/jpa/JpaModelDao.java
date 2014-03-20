@@ -24,9 +24,9 @@ public class JpaModelDao implements ModelDao {
 	public List<Model> getAllModels() {
 		EntityManager em = emf.createEntityManager();
 		Query query = em.createQuery("SELECT b FROM Model AS b");
-		List<Model> brands = query.getResultList();
+		List<Model> models = query.getResultList();
 		em.close();
-		return brands;
+		return models;
 	}
 
 	@Override

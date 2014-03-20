@@ -1,10 +1,12 @@
 package com.brookes.garage.dao;
 
 
+import com.brookes.garage.dao.jpa.JpaEstimateDao;
 import com.brookes.garage.dao.jpa.JpaModelDao;
 import com.brookes.garage.dao.jpa.JpaBrandDao;
 import com.brookes.garage.dao.jpa.JpaCustomerDao;
 import com.brookes.garage.dao.jpa.JpaPartDao;
+import com.brookes.garage.dao.jpa.JpaRepairDao;
 import com.brookes.garage.util.PersistenceManager;
 
 public class DaoFactory {
@@ -27,5 +29,13 @@ public class DaoFactory {
 	
 	public static PartDao getPartDao() {
 		return new JpaPartDao(PersistenceManager.getEmf());
+	}
+	
+	public static RepairDao getRepairDao() {
+		return new JpaRepairDao(PersistenceManager.getEmf());
+	}
+	
+	public static EstimateDao getEstimateDao() {
+		return new JpaEstimateDao(PersistenceManager.getEmf());
 	}
 }

@@ -24,9 +24,9 @@ public class JpaPartDao implements PartDao {
 	public List<Part> getAllParts() {
 		EntityManager em = emf.createEntityManager();
 		Query query = em.createQuery("SELECT b FROM Part AS b");
-		List<Part> brands = query.getResultList();
+		List<Part> parts = query.getResultList();
 		em.close();
-		return brands;
+		return parts;
 	}
 
 	@Override
@@ -57,6 +57,8 @@ public class JpaPartDao implements PartDao {
 		t.begin();
 			Part partToUpdate = em.find(Part.class, part.getId());
 			partToUpdate.setName(part.getName());
+			partToUpdate.setPrice(part.getPrice());
+			partToUpdate.setReference(part.getReference());
 			em.persist(partToUpdate);
 		t.commit();
 		em.close();
