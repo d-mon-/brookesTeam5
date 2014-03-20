@@ -8,7 +8,6 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import com.brookes.garage.dao.EstimateDao;
-import com.brookes.garage.entity.Brand;
 import com.brookes.garage.entity.Estimate;
 
 public class JpaEstimateDao implements EstimateDao {

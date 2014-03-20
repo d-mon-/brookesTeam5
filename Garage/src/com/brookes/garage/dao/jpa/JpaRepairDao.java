@@ -8,7 +8,6 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import com.brookes.garage.dao.RepairDao;
-import com.brookes.garage.entity.Brand;
 import com.brookes.garage.entity.Repair;
 
 public class JpaRepairDao implements RepairDao {
