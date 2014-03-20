@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import com.brookes.garage.entity.Model;
+import java.awt.Color;
 
 public class ModelFormFrame extends JFrame {
 
@@ -46,7 +47,7 @@ public class ModelFormFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public ModelFormFrame() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 340, 99);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -77,6 +78,7 @@ public class ModelFormFrame extends JFrame {
 		contentPane.add(saveButton);
 		
 		noEmptyLabel = new JLabel("This field is mandatory.");
+		noEmptyLabel.setForeground(Color.RED);
 		noEmptyLabel.setBounds(13, 47, 149, 16);
 		contentPane.add(noEmptyLabel);
 		noEmptyLabel.setVisible(false);

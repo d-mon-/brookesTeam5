@@ -7,6 +7,8 @@ import javax.swing.table.AbstractTableModel;
 
 import com.brookes.garage.dao.DaoFactory;
 import com.brookes.garage.dao.PartDao;
+import com.brookes.garage.entity.Brand;
+import com.brookes.garage.entity.Model;
 import com.brookes.garage.entity.Part;
 
 public class PartTableModel extends AbstractTableModel {
@@ -18,7 +20,7 @@ public class PartTableModel extends AbstractTableModel {
 	// ArrayList of Part to populate the table
 	public List<Part> data = new ArrayList<Part>();
 	// The columns titles
-	private final String[] titles = { "Reference", "Name", "Price" };
+	private final String[] titles = { "Reference", "Name", "Price (£)" };
 	
 	/**
 	 * The constructor method
@@ -27,7 +29,6 @@ public class PartTableModel extends AbstractTableModel {
 		super();
 
 		partDao = DaoFactory.getPartDao();
-		data = partDao.getAllParts();
 	}
 
 	/**
@@ -95,4 +96,14 @@ public class PartTableModel extends AbstractTableModel {
 		fireTableRowsUpdated(firstRow, firstRow);
 	}
 
+	public void updatePartContent(Model model) {
+		data = model.getParts();
+		fireTableDataChanged();
+	}
+	
+	public void clearPartContent() {
+		data = new ArrayList<Part>();
+		fireTableDataChanged();
+	}
+	
 }

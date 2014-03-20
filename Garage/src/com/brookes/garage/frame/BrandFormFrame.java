@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import com.brookes.garage.entity.Brand;
+import java.awt.Color;
 
 public class BrandFormFrame extends JFrame {
 
@@ -77,6 +78,7 @@ public class BrandFormFrame extends JFrame {
 		contentPane.add(saveButton);
 		
 		noEmptyLabel = new JLabel("This field is mandatory.");
+		noEmptyLabel.setForeground(Color.RED);
 		noEmptyLabel.setBounds(13, 47, 149, 16);
 		contentPane.add(noEmptyLabel);
 		noEmptyLabel.setVisible(false);

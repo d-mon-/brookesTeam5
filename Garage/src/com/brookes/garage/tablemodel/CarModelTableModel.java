@@ -7,6 +7,7 @@ import javax.swing.table.AbstractTableModel;
 
 import com.brookes.garage.dao.DaoFactory;
 import com.brookes.garage.dao.ModelDao;
+import com.brookes.garage.entity.Brand;
 import com.brookes.garage.entity.Model;
 
 public class CarModelTableModel extends AbstractTableModel {
@@ -27,7 +28,6 @@ public class CarModelTableModel extends AbstractTableModel {
 		super();
 
 		modelDao = DaoFactory.getModelDao();
-		data = modelDao.getAllModels();
 	}
 
 	/**
@@ -91,4 +91,9 @@ public class CarModelTableModel extends AbstractTableModel {
 		fireTableRowsUpdated(firstRow, firstRow);
 	}
 
+	public void updateModelContent(Brand brand) {
+		data = brand.getModels();
+		fireTableDataChanged();
+	}
+	
 }

@@ -13,6 +13,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import com.brookes.garage.entity.Customer;
+import java.awt.Color;
 
 
 public class CustomerFormFrame extends JFrame {
@@ -108,6 +109,7 @@ public class CustomerFormFrame extends JFrame {
 		saveButton.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		noEmptyLabel = new JLabel("No field can be empty");
+		noEmptyLabel.setForeground(Color.RED);
 		noEmptyLabel.setBounds(181, 187, 138, 16);
 		noEmptyLabel.setVisible(false);
 		

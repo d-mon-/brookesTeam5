@@ -32,6 +32,9 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 	    
 		public JPanel mainPanel;
 
+		private Brand selectedBrand;
+		private Model selectedModel;
+		
 		private CarListFrame carListFrame;
 		private BrandFormFrame brandForm;
 		private ModelFormFrame modelForm;
@@ -67,7 +70,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				// table
 				brandTableModel = new BrandTableModel();
 				carListFrame.brandTable.setModel(brandTableModel);
-				//carListFrame.brandTable.getSelectionModel().addListSelectionListener(this);
+				carListFrame.brandTable.getSelectionModel().addListSelectionListener(this);
 
 				// Create and configure a table row sorter
 				// so that the user is able to sort the table according to columns
@@ -290,6 +293,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 					// We create a new model with the values and save it
 					Model model= new Model();
 					model.setName(name);
+					model.setBrand(selectedBrand);
 
 					// We add it to the database and our table model
 					modelDao.addModel(model);
@@ -358,9 +362,20 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 			String name = partForm.nameField.getText();
 			String ref = partForm.refField.getText();
 			String price = partForm.priceField.getText();
+			
+			
 
 			if (name.length() > 0 && ref.length() > 0 && price.length() > 0) {
 				// The Reference, name and price fields must contain a value
+				
+				// Test that the price value entered is a suitable int/double
+				try {
+				    Double testValue = Double.parseDouble(price);
+				} catch (NumberFormatException nfe) {
+					partForm.noEmptyLabel.setText("Price must be a number.");
+					partForm.noEmptyLabel.setVisible(true);
+					return;
+				}
 
 				if (partForm.getPart() != null) {
 					// The form contains an existing part
@@ -381,6 +396,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 					part.setName(name);
 					part.setReference(ref);
 					part.setPrice(Double.parseDouble(price));
+					part.setModel(selectedModel);
 
 					// We add it to the database and our table model
 					partDao.addPart(part);
@@ -391,6 +407,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				partForm.dispose();
 			} else {
 				// Not every fields contain a value so we display a message
+				partForm.noEmptyLabel.setText("All fields are mandatory.");
 				partForm.noEmptyLabel.setVisible(true);
 			}
 		}
@@ -416,14 +433,46 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 			if (e.getSource() == carListFrame.brandTable.getSelectionModel()) {
 				// Since a row is now selected, we enable the edit and delete
 				// buttons for Brand
-				carListFrame.brandEditButton.setEnabled(true);
-				carListFrame.brandDeleteButton.setEnabled(true);
+				int rowIndex = carListFrame.brandTable.getSelectedRow();
+				if(rowIndex >= 0) {
+					selectedBrand = brandTableModel.data.get(rowIndex);
+					carModelTableModel.updateModelContent(selectedBrand);
+					partTableModel.clearPartContent();
+					
+					carListFrame.partEditButton.setEnabled(false);
+					carListFrame.partDeleteButton.setEnabled(false);
+					
+					carListFrame.brandEditButton.setEnabled(true);
+					carListFrame.brandDeleteButton.setEnabled(true);
+					carListFrame.modelCreateButton.setEnabled(true);
+				}
+				else {
+					carListFrame.brandEditButton.setEnabled(false);
+					carListFrame.brandDeleteButton.setEnabled(false);
+					carListFrame.modelCreateButton.setEnabled(false);
+				}
 			}
 			else if (e.getSource() == carListFrame.modelTable.getSelectionModel()) {
 				// Since a row is now selected, we enable the edit and delete
 				// buttons for Model
-				carListFrame.modelEditButton.setEnabled(true);
-				carListFrame.modelDeleteButton.setEnabled(true);
+				int rowIndex = carListFrame.modelTable.getSelectedRow();
+				if(rowIndex >= 0) {
+					selectedModel = carModelTableModel.data.get(rowIndex);
+					partTableModel.updatePartContent(selectedModel);
+					
+					carListFrame.modelEditButton.setEnabled(true);
+					carListFrame.modelDeleteButton.setEnabled(true);
+					carListFrame.partCreateButton.setEnabled(true);
+					
+					carListFrame.partEditButton.setEnabled(false);
+					carListFrame.partDeleteButton.setEnabled(false);
+				}
+				else {
+					carListFrame.modelEditButton.setEnabled(false);
+					carListFrame.modelDeleteButton.setEnabled(false);
+					carListFrame.partCreateButton.setEnabled(false);
+				}
+				
 			}
 			else if (e.getSource() == carListFrame.partTable.getSelectionModel()) {
 				// Since a row is now selected, we enable the edit and delete
