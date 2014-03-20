@@ -5,6 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
@@ -32,6 +35,7 @@ public class CustomerModuleController implements ActionListener,
 
 	private CustomerDao customerDao = DaoFactory.getCustomerDao();
 	private CustomerTableModel tableModel;
+	private TableRowSorter<TableModel>  sorter;
 
 	public CustomerModuleController() {
 		super();
@@ -62,7 +66,7 @@ public class CustomerModuleController implements ActionListener,
 
 			// Create and configure a table row sorter
 			// so that the user is able to sort the table according to columns
-			TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(
+			sorter = new TableRowSorter<TableModel>(
 					customerListFrame.table.getModel());
 			customerListFrame.table.setRowSorter(sorter);
 			sorter.setSortable(2, false);
@@ -73,8 +77,33 @@ public class CustomerModuleController implements ActionListener,
 			customerListFrame.editButton.addActionListener(this);
 			customerListFrame.deleteButton.addActionListener(this);
 			customerListFrame.viewButton.addActionListener(this);
+			customerListFrame.filterTextField.getDocument().addDocumentListener(
+	                new DocumentListener() {
+	                    public void changedUpdate(DocumentEvent e) {
+	                        newFilter();
+	                    }
+	                    public void insertUpdate(DocumentEvent e) {
+	                        newFilter();
+	                    }
+	                    public void removeUpdate(DocumentEvent e) {
+	                        newFilter();
+	                    }
+	                });
+			
 		}
 	}
+	
+	private void newFilter() {
+		
+        RowFilter<TableModel, Object> rf = null;
+        //If current expression doesn't parse, don't update.
+        try {
+            rf = RowFilter.regexFilter(customerListFrame.filterTextField.getText(), 0);
+        } catch (java.util.regex.PatternSyntaxException e) {
+            return;
+        }
+        sorter.setRowFilter(rf);
+    }
 
 	/**
 	 * Create the details frame
@@ -105,6 +134,8 @@ public class CustomerModuleController implements ActionListener,
 			this.goBackToCustomerList();
 		}
 	}
+	
+	
 
 	/**
 	 * Display the customer creation form in a new window Listen to the action

@@ -10,7 +10,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import org.apache.derby.tools.sysinfo;
 
 import com.brookes.garage.dao.BrandDao;
 import com.brookes.garage.dao.DaoFactory;
