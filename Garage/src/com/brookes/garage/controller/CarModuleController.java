@@ -111,6 +111,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 			} else if (e.getSource() == carListFrame.modelDeleteButton) {
 				//this.deleteBrand();
 				System.out.println("Test");
+				System.out.println("Test2");
 			} 
 			//else if (brandForm != null && e.getSource() == brandForm.saveButton) {
 			//	this.saveBrand();
