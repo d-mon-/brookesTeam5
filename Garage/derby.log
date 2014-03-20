@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
-Thu Mar 20 17:16:29 GMT 2014:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.1.1 - (1458268): instance a816c00e-0144-e07e-7d24-00000540c910 
-on database directory C:\Users\Jonathan\Desktop\SimpleDB with class loader sun.misc.Launcher$AppClassLoader@214c4ac9 
-Loaded from file:/C:/Users/Jonathan/git/brookesTeam5/Garage/lib/derby.jar
+Thu Mar 20 21:44:26 GMT 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.1.1 - (1458268): instance a816c00e-0144-e173-ca14-000005cdd440 
+on database directory C:\Users\d-mon\db\SimpleDB with class loader sun.misc.Launcher$AppClassLoader@6921dcac 
+Loaded from file:/C:/Users/d-mon/git/brookesTeam5/Garage/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.7.0-b147
-user.dir=C:\Users\Jonathan\git\brookesTeam5\Garage
+java.runtime.version=1.7.0_51-b13
+user.dir=C:\Users\d-mon\git\brookesTeam5\Garage
 os.name=Windows 7
 os.arch=amd64
 os.version=6.1
