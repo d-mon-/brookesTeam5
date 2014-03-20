@@ -10,6 +10,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import org.apache.derby.tools.sysinfo;
+
 import com.brookes.garage.dao.BrandDao;
 import com.brookes.garage.dao.DaoFactory;
 import com.brookes.garage.entity.Brand;
@@ -109,6 +111,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				System.out.println("Hello");
 			} else if (e.getSource() == carListFrame.modelDeleteButton) {
 				//this.deleteBrand();
+				System.out.println("Test");
 			} 
 			//else if (brandForm != null && e.getSource() == brandForm.saveButton) {
 			//	this.saveBrand();
