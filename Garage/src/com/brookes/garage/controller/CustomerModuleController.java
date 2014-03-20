@@ -88,7 +88,7 @@ public class CustomerModuleController implements ActionListener,
 	                    public void removeUpdate(DocumentEvent e) {
 	                        newFilter();
 	                    }
-	                });
+	                }); 
 			
 		}
 	}
