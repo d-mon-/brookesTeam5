@@ -40,5 +40,10 @@ public class Brand {
 	public List<Model> getModels() {
 		return models;
 	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
 	
 }

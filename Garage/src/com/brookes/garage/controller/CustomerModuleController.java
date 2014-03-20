@@ -13,7 +13,6 @@ import javax.swing.table.TableRowSorter;
 import com.brookes.garage.dao.CustomerDao;
 import com.brookes.garage.dao.DaoFactory;
 import com.brookes.garage.entity.Customer;
-import com.brookes.garage.frame.CustomerDetailsFrame;
 import com.brookes.garage.frame.CustomerFormFrame;
 import com.brookes.garage.frame.CustomerListFrame;
 import com.brookes.garage.tablemodel.CustomerTableModel;
@@ -27,7 +26,7 @@ public class CustomerModuleController implements ActionListener,
 	public JPanel mainPanel;
 
 	private CustomerListFrame customerListFrame;
-	private CustomerDetailsFrame customerDetailsFrame;
+	private CustomerDetailsController customerDetailsController;
 	private CustomerFormFrame customerForm;
 
 	private CustomerDao customerDao = DaoFactory.getCustomerDao();
@@ -42,7 +41,7 @@ public class CustomerModuleController implements ActionListener,
 		mainPanel = new JPanel(new CardLayout());
 		mainPanel.setOpaque(false);
 		mainPanel.add(customerListFrame.contentPane, LISTFRAME);
-		mainPanel.add(customerDetailsFrame.contentPane, DETAILSFRAME);
+		mainPanel.add(customerDetailsController.mainFrame.contentPane, DETAILSFRAME);
 	
 	}
 
@@ -80,9 +79,9 @@ public class CustomerModuleController implements ActionListener,
 	 * Create the details frame
 	 */
 	private void createDetailsPage() {
-		if (customerDetailsFrame == null) {
-			customerDetailsFrame = new CustomerDetailsFrame();
-			customerDetailsFrame.backButton.addActionListener(this);
+		if (customerDetailsController == null) {
+			customerDetailsController = new CustomerDetailsController();
+			customerDetailsController.mainFrame.backButton.addActionListener(this);
 		}
 	}
 	
@@ -101,7 +100,7 @@ public class CustomerModuleController implements ActionListener,
 			this.viewCustomerDetails();
 		} else if (customerForm != null && e.getSource() == customerForm.saveButton) {
 			this.saveCustomer();
-		} else if (customerDetailsFrame != null && e.getSource() == customerDetailsFrame.backButton) {
+		} else if (customerDetailsController != null && e.getSource() == customerDetailsController.mainFrame.backButton) {
 			this.goBackToCustomerList();
 		}
 	}
@@ -222,9 +221,7 @@ public class CustomerModuleController implements ActionListener,
 		int rowIndex = customerListFrame.table.getSelectedRow();
 		Customer customer = tableModel.data.get(rowIndex);
 		
-		customerDetailsFrame.nameLabel.setText(customer.getFirstname() + " " + customer.getLastname());
-		customerDetailsFrame.addressLabel.setText(customer.getAddress());
-		customerDetailsFrame.phoneLabel.setText(customer.getPhone_number());
+		customerDetailsController.setCustomer(customer);
 		
         CardLayout cl = (CardLayout)(mainPanel.getLayout());
         cl.show(mainPanel, DETAILSFRAME);

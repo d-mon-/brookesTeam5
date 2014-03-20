@@ -104,7 +104,7 @@ public class CarListFrame extends JFrame {
 		panel_3.add(scrollPane_1, BorderLayout.CENTER);
 		
 		modelTable = new JTable();
-		scrollPane_1.setColumnHeaderView(modelTable);
+		scrollPane_1.setViewportView(modelTable);
 		
 		panel_5 = new JPanel();
 		panel_5.setOpaque(false);
@@ -140,7 +140,7 @@ public class CarListFrame extends JFrame {
 		panel_5.add(scrollPane_2, BorderLayout.CENTER);
 		
 		partTable = new JTable();
-		scrollPane_2.setColumnHeaderView(partTable);
+		scrollPane_2.setViewportView(partTable);
 		
 		panel_1 = new JPanel();
 		panel_1.setOpaque(false);
@@ -176,7 +176,7 @@ public class CarListFrame extends JFrame {
 		panel_1.add(scrollPane, BorderLayout.CENTER);
 		
 		brandTable = new JTable();
-		scrollPane.setColumnHeaderView(brandTable);
+		scrollPane.setViewportView(brandTable);
 		
 	}
 }

@@ -85,7 +85,7 @@ public class CustomerListFrame extends JFrame {
 		gbc_table.gridx = 0;
 		gbc_table.gridy = 1;
 		contentPane.add(new JScrollPane(table), gbc_table);
-		
+
 	}
 
 }

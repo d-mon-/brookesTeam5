@@ -6,7 +6,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import com.brookes.garage.dao.DaoFactory;
-import com.brookes.garage.entity.Brand;
+import com.brookes.garage.dao.RepairDao;
 import com.brookes.garage.entity.Customer;
 import com.brookes.garage.entity.Customers_car;
 import com.brookes.garage.entity.Repair;
@@ -20,7 +20,7 @@ public class RepairTableModel extends AbstractTableModel {
 	// ArrayList of Customer to populate the table
 	public List<Repair> data = new ArrayList<Repair>();
 	// The columns titles
-	private final String[] titles = { "Id", "Client", "Car", "Status", "Creation Date" };
+	private final String[] titles = { "Reference", "Client", "Car", "Status", "Creation Date" };
 
 	/**
 	 * The constructor method
@@ -28,7 +28,7 @@ public class RepairTableModel extends AbstractTableModel {
 	public RepairTableModel() {
 		super();
 
-		repairDao = DaoFactory.getBrandDao();
+		repairDao = DaoFactory.getRepairDao();
 		data = repairDao.getAllRepairs();
 	}
 
