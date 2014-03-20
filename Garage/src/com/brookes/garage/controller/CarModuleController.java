@@ -28,10 +28,8 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 		private CarListFrame carListFrame;
 		private BrandFormFrame brandForm;
 
-		
 		private BrandDao brandDao = DaoFactory.getBrandDao();
 		private BrandTableModel brandTableModel;
-		
 		
 		private CarModelTableModel carModelTableModel;
 
@@ -56,7 +54,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				// table
 				brandTableModel = new BrandTableModel();
 				carListFrame.brandTable.setModel(brandTableModel);
-				carListFrame.brandTable.getSelectionModel().addListSelectionListener(this);
+				//carListFrame.brandTable.getSelectionModel().addListSelectionListener(this);
 
 				// Create and configure a table row sorter
 				// so that the user is able to sort the table according to columns
@@ -64,24 +62,29 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				carListFrame.brandTable.setRowSorter(brandSorter);
 				brandSorter.setSortsOnUpdates(true);
 				
-				// Add itself as action listener to create, edit and delete a brand
-				carListFrame.brandCreateButton.addActionListener(this);
-				carListFrame.brandEditButton.addActionListener(this);
-				carListFrame.brandDeleteButton.addActionListener(this);
-				
-				
 				
 				// Set the table model and add itself as selection listener for the
 				// table
 				carModelTableModel = new CarModelTableModel();
 				carListFrame.modelTable.setModel(carModelTableModel);
-				carListFrame.brandTable.getSelectionModel().addListSelectionListener(this);
+				carListFrame.modelTable.getSelectionModel().addListSelectionListener(this);
 
 				// Create and configure a table row sorter
 				// so that the user is able to sort the table according to columns
 				TableRowSorter<TableModel> modelSorter = new TableRowSorter<TableModel>(carListFrame.modelTable.getModel());
 				carListFrame.modelTable.setRowSorter(modelSorter);
 				modelSorter.setSortsOnUpdates(true);
+				
+				
+				// Add itself as action listener to create, edit and delete a brand
+				carListFrame.brandCreateButton.addActionListener(this);
+				carListFrame.brandEditButton.addActionListener(this);
+				carListFrame.brandDeleteButton.addActionListener(this);
+				
+				// Add itself as action listener to create, edit and delete a model
+				carListFrame.modelCreateButton.addActionListener(this);
+				carListFrame.modelEditButton.addActionListener(this);
+				carListFrame.modelDeleteButton.addActionListener(this);
 				
 			}
 		}
@@ -99,7 +102,16 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				this.deleteBrand();
 			} else if (brandForm != null && e.getSource() == brandForm.saveButton) {
 				this.saveBrand();
-			}			
+			} else if (e.getSource() == carListFrame.modelCreateButton) {
+				//this.showBrandCreationForm();
+			} else if (e.getSource() == carListFrame.modelEditButton) {
+				//this.showBrandEditionForm();
+			} else if (e.getSource() == carListFrame.modelDeleteButton) {
+				//this.deleteBrand();
+			} 
+			//else if (brandForm != null && e.getSource() == brandForm.saveButton) {
+			//	this.saveBrand();
+			//}	
 		}
 		
 		/**
@@ -156,7 +168,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				} else {
 					// The form was a creation form
 					// We create a new brand with the values and save it
-					Brand brand = new Brand();
+					Brand brand= new Brand();
 					brand.setName(name);
 
 					// We add it to the database and our table model
@@ -194,6 +206,12 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				// buttons for Brand
 				carListFrame.brandEditButton.setEnabled(true);
 				carListFrame.brandDeleteButton.setEnabled(true);
+			}
+			else if (e.getSource() == carListFrame.modelTable.getSelectionModel()) {
+				// Since a row is now selected, we enable the edit and delete
+				// buttons for Model
+				carListFrame.modelEditButton.setEnabled(true);
+				carListFrame.modelDeleteButton.setEnabled(true);
 			}
 		}
 }
