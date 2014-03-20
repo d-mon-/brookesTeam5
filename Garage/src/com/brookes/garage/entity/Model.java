@@ -59,4 +59,8 @@ public class Model {
 		return cars;
 	}
 	
+	@Override
+	public String toString() {
+		return brand.getName() + " " + name;
+	}
 }
