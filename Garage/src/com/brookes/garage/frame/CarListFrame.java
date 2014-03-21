@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import com.jgoodies.forms.factories.FormFactory;
@@ -86,10 +87,11 @@ public class CarListFrame extends JFrame {
 				RowSpec.decode("28px"),
 				RowSpec.decode("28px"),}));
 		
-		JLabel modelLabel = new JLabel("  Model");
+		JLabel modelLabel = new JLabel("  Models");
 		panel_4.add(modelLabel, "1, 1, left, center");
 		
 		modelCreateButton = new JButton("Create");
+		modelCreateButton.setEnabled(false);
 		panel_4.add(modelCreateButton, "1, 2, left, top");
 		
 		modelEditButton = new JButton("Edit");
@@ -104,6 +106,7 @@ public class CarListFrame extends JFrame {
 		panel_3.add(scrollPane_1, BorderLayout.CENTER);
 		
 		modelTable = new JTable();
+		modelTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_1.setViewportView(modelTable);
 		
 		panel_5 = new JPanel();
@@ -122,17 +125,18 @@ public class CarListFrame extends JFrame {
 				RowSpec.decode("28px"),
 				RowSpec.decode("28px"),}));
 		
-		JLabel partLabel = new JLabel("  Part");
+		JLabel partLabel = new JLabel("  Parts");
 		panel_6.add(partLabel, "1, 1, left, center");
 		
-		JButton partCreateButton = new JButton("Create");
+		partCreateButton = new JButton("Create");
+		partCreateButton.setEnabled(false);
 		panel_6.add(partCreateButton, "1, 2, left, top");
 		
-		JButton partEditButton = new JButton("Edit");
+		partEditButton = new JButton("Edit");
 		partEditButton.setEnabled(false);
 		panel_6.add(partEditButton, "2, 2, left, top");
 		
-		JButton partDeleteButton = new JButton("Delete");
+		partDeleteButton = new JButton("Delete");
 		partDeleteButton.setEnabled(false);
 		panel_6.add(partDeleteButton, "3, 2, left, top");
 		
@@ -140,6 +144,7 @@ public class CarListFrame extends JFrame {
 		panel_5.add(scrollPane_2, BorderLayout.CENTER);
 		
 		partTable = new JTable();
+		partTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_2.setViewportView(partTable);
 		
 		panel_1 = new JPanel();
@@ -158,7 +163,7 @@ public class CarListFrame extends JFrame {
 				RowSpec.decode("28px"),
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
-		JLabel brandLabel = new JLabel("  Brand");
+		JLabel brandLabel = new JLabel("  Brands");
 		panel_2.add(brandLabel, "1, 1, left, center");
 		
 		brandCreateButton = new JButton("Create");
@@ -176,6 +181,7 @@ public class CarListFrame extends JFrame {
 		panel_1.add(scrollPane, BorderLayout.CENTER);
 		
 		brandTable = new JTable();
+		brandTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(brandTable);
 		
 	}

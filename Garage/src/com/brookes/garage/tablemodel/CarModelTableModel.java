@@ -7,6 +7,7 @@ import javax.swing.table.AbstractTableModel;
 
 import com.brookes.garage.dao.DaoFactory;
 import com.brookes.garage.dao.ModelDao;
+import com.brookes.garage.entity.Brand;
 import com.brookes.garage.entity.Model;
 
 public class CarModelTableModel extends AbstractTableModel {
@@ -15,7 +16,7 @@ public class CarModelTableModel extends AbstractTableModel {
 
 	// Related Model entity DAO
 	private ModelDao modelDao;
-	// ArrayList of Customer to populate the table
+	// ArrayList of Model to populate the table
 	public List<Model> data = new ArrayList<Model>();
 	// The columns titles
 	private final String[] titles = { "Model Name" };
@@ -27,7 +28,6 @@ public class CarModelTableModel extends AbstractTableModel {
 		super();
 
 		modelDao = DaoFactory.getModelDao();
-		data = modelDao.getAllModels();
 	}
 
 	/**
@@ -91,4 +91,9 @@ public class CarModelTableModel extends AbstractTableModel {
 		fireTableRowsUpdated(firstRow, firstRow);
 	}
 
+	public void updateModelContent(Brand brand) {
+		data = brand.getModels();
+		fireTableDataChanged();
+	}
+	
 }
