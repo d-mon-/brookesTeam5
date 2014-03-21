@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -12,6 +14,7 @@ import com.brookes.garage.dao.CarDao;
 import com.brookes.garage.dao.DaoFactory;
 import com.brookes.garage.entity.Brand;
 import com.brookes.garage.entity.Customer;
+import com.brookes.garage.entity.Customers_car;
 import com.brookes.garage.entity.Model;
 import com.brookes.garage.frame.CarFormFrame;
 import com.brookes.garage.frame.CustomerDetailsFrame;
@@ -65,7 +68,31 @@ public class CustomerDetailsController implements ActionListener, ListSelectionL
 			DefaultComboBoxModel<Model> model = new DefaultComboBoxModel<Model>(array);
 			carForm.modelComboBox.setModel(model);
 			carForm.modelComboBox.setEnabled(true);
+		}  else if (e.getSource() == carForm.saveButton) {
+			this.addCarToCustomer(carForm.identifierField.getText(), (Model) carForm.modelComboBox.getSelectedItem());
 		}
+	}
+	
+	/**
+	 * Add a new car according to a customer and a (Brand->) model
+	 * triggered by the save button
+	 */
+	public void addCarToCustomer(String plate, Model model) {
+		if(plate.isEmpty()||model.equals(null)){
+			//no plate or model defined before save -> pop up "error"
+			JOptionPane.showMessageDialog(null, "You must specify a plate and a model.");
+		}else{
+			//must verify if the plate already exist in the DB
+			Customers_car customer_car = new Customers_car();
+			customer_car.setModel(model);
+			customer_car.setNumber_plate(plate);
+			customer_car.setCustomer(customer);
+			carDao.addCar(customer_car);
+			carTableModel.addCar(customer_car);
+			carForm.dispose();
+			
+		}
+		
 	}
 
 	/**
@@ -75,8 +102,6 @@ public class CustomerDetailsController implements ActionListener, ListSelectionL
 	public void showCarCreationForm() {
 		carForm = new CarFormFrame();
 		carForm.saveButton.addActionListener(this);
-		carForm.saveButton.addActionListener(this);
-
 		carForm.setVisible(true);
 	}
 
