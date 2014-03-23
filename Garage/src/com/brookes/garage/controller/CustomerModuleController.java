@@ -97,7 +97,7 @@ public class CustomerModuleController implements ActionListener,
         RowFilter<TableModel, Object> rf = null;
         //If current expression doesn't parse, don't update.
         try {
-            rf = RowFilter.regexFilter(customerListFrame.filterTextField.getText(), 0);
+            rf = RowFilter.regexFilter("(?i)"+customerListFrame.filterTextField.getText(), 0,1,2);
         } catch (java.util.regex.PatternSyntaxException e) {
             return;
         }
