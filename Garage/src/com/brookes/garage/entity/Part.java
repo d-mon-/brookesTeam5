@@ -23,6 +23,8 @@ public class Part {
 	
 	private Model model;
 	
+	private boolean delete_flag;
+	
 	private final List<Estimate> estimates = new ArrayList<Estimate>();
 
 	
@@ -68,6 +70,14 @@ public class Part {
 
 	public List<Estimate> getEstimates() {
 		return estimates;
+	}
+
+	public boolean isDelete_flag() {
+		return delete_flag;
+	}
+
+	public void setDelete_flag(boolean delete_flag) {
+		this.delete_flag = delete_flag;
 	}
 	
 }
