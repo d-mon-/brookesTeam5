@@ -1,6 +1,8 @@
 package com.brookes.garage.dao;
 
 import java.util.List;
+
+import com.brookes.garage.entity.Brand;
 import com.brookes.garage.entity.Model;
 
 public interface ModelDao {
@@ -8,4 +10,5 @@ public interface ModelDao {
 	public void addModel(Model model);
 	public void removeModel(Model model);
 	public void updateModel(Model model);
+	public void invalidateEntry(Model model);
 }

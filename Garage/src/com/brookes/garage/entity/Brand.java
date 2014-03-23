@@ -18,7 +18,7 @@ public class Brand {
 	
 	private String name;
 	
-	private boolean delete_flag;
+	private boolean delete_flag = false;
 	
 	@OneToMany(mappedBy = "brand")
 	private final List<Model> models = new ArrayList<Model>();
