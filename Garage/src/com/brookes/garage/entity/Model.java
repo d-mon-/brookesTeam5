@@ -19,6 +19,8 @@ public class Model {
 	private String name;
 	
 	private Brand brand;
+	
+	private boolean delete_flag = false;
 
 	@OneToMany(mappedBy = "model")
 	private final List<Part> parts = new ArrayList<Part>();
@@ -59,4 +61,16 @@ public class Model {
 		return cars;
 	}
 	
+	@Override
+	public String toString() {
+		return brand.getName() + " " + name;
+	}
+
+	public boolean isDelete_flag() {
+		return delete_flag;
+	}
+
+	public void setDelete_flag(boolean delete_flag) {
+		this.delete_flag = delete_flag;
+	}
 }

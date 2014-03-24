@@ -9,6 +9,8 @@ import javax.persistence.Query;
 
 import com.brookes.garage.dao.BrandDao;
 import com.brookes.garage.entity.Brand;
+import com.brookes.garage.entity.Model;
+import com.brookes.garage.entity.Part;
 
 public class JpaBrandDao implements BrandDao {
 
@@ -60,6 +62,32 @@ public class JpaBrandDao implements BrandDao {
 			em.persist(brandToUpdate);
 		t.commit();
 		em.close();
+	}
+	
+	@Override
+	public void invalidateEntry(Brand brand){
+		Model myModel = null;
+		Part myPart = null;
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction t = em.getTransaction();
+		t.begin();
+			Brand brandToUpdate = em.find(Brand.class, brand.getId());
+			brandToUpdate.setDelete_flag(true);			
+			List<Model> models = brandToUpdate.getModels();
+			for(int i = 0, _l = models.size(); i<_l;i++){
+				myModel = models.get(i);
+				myModel.setDelete_flag(true);
+				List<Part> parts = myModel.getParts();
+				for(int j = 0, __l = parts.size(); j<__l;j++){
+					myPart = parts.get(j);
+					myPart.setDelete_flag(true);
+					em.persist(myPart);
+				}
+				em.persist(myModel);
+			}
+			em.persist(brandToUpdate);
+		t.commit();
+		em.close();	
 	}
 
 }

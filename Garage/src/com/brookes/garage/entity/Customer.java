@@ -72,5 +72,10 @@ public class Customer {
 	public List<Customers_car> getCars() {
 		return cars;
 	}
+
+	@Override
+	public String toString() {
+		return firstname + " " + lastname;
+	}
 	
 }

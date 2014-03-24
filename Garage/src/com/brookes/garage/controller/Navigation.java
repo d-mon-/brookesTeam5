@@ -7,8 +7,6 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 
-import com.brookes.garage.frame.CarListFrame;
-
 public class Navigation
 {
    	private JFrame appFrame;
@@ -16,8 +14,8 @@ public class Navigation
 
    	private CustomerModuleController customerModuleController;
    	private CarModuleController carModuleController;
-   	CarListFrame secondFrame;
-   	
+   	private RepairModuleController repairModuleController;
+   	   	
    	
 	/**
 	 * Launch the application.
@@ -42,6 +40,7 @@ public class Navigation
    { 	
 	   customerModuleController = new CustomerModuleController();
 	   carModuleController = new CarModuleController();
+	   repairModuleController = new RepairModuleController();
 	   
        createGUI();
    }
@@ -63,16 +62,13 @@ public class Navigation
    		appFrame.setResizable(false);
    		appFrame.setVisible(true);
    		appFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-   		
-   		// Create the different frames (one for each module)
-   		secondFrame = new CarListFrame();
    			
    				
    		// Create and configure the tabbed pane (composed of modules)
    		JTabbedPane tabbedPane = new JTabbedPane();
    		tabbedPane.addTab("Customers", customerModuleController.mainPanel);
    		tabbedPane.addTab("Cars", carModuleController.mainPanel);
-   		tabbedPane.addTab("Repairs", secondFrame.contentPane);
+   		tabbedPane.addTab("Repairs", repairModuleController.mainPanel);
    		cPane.add(tabbedPane, BorderLayout.CENTER);
 
    	}

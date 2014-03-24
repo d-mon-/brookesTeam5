@@ -10,5 +10,5 @@ public interface BrandDao {
 	public void addBrand(Brand brand);
 	public void removeBrand(Brand brand);
 	public void updateBrand(Brand brand);
-	
+	public void invalidateEntry(Brand brand);
 }

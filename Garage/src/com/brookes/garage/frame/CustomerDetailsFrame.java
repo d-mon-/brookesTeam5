@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import com.jgoodies.forms.factories.FormFactory;
@@ -23,6 +24,11 @@ public class CustomerDetailsFrame extends JFrame {
 	public JLabel nameLabel;
 	public JLabel addressLabel;
 	public JLabel phoneLabel;
+	public JButton addCarButton;
+	private JScrollPane scrollPane;
+	private JScrollPane scrollPane_1;
+	private JLabel lblCars;
+	private JLabel lblRepairs;
 
 	/**
 	 * Launch the application.
