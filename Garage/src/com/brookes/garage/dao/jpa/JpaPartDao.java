@@ -55,11 +55,7 @@ public class JpaPartDao implements PartDao {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();
-			Part partToUpdate = em.find(Part.class, part.getId());
-			partToUpdate.setName(part.getName());
-			partToUpdate.setPrice(part.getPrice());
-			partToUpdate.setReference(part.getReference());
-			em.persist(partToUpdate);
+			em.merge(part);
 		t.commit();
 		em.close();
 	}

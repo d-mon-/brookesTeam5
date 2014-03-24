@@ -44,11 +44,7 @@ public class JpaInvoiceDao implements InvoiceDao {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();
-			Invoice invoiceToUpdate = em.find(Invoice.class, invoice.getId());
-			invoiceToUpdate.setCreation_date(invoice.getCreation_date());
-			invoiceToUpdate.setEstimate(invoice.getEstimate());
-			invoiceToUpdate.setIdentifier(invoice.getIdentifier());
-			em.persist(invoice);
+			em.merge(invoice);
 		t.commit();
 		em.close();
 	}

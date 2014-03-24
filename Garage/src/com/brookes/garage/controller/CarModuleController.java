@@ -10,7 +10,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-
 import com.brookes.garage.dao.BrandDao;
 import com.brookes.garage.dao.DaoFactory;
 import com.brookes.garage.dao.ModelDao;
@@ -292,6 +291,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				} else {
 					// The form was a creation form
 					// We create a new model with the values and save it
+					System.out.println(selectedBrand.getModels().size());
 					Model model= new Model();
 					model.setName(name);
 					model.setBrand(selectedBrand);
@@ -299,6 +299,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 					// We add it to the database and our table model
 					modelDao.addModel(model);
 					carModelTableModel.addModel(model);
+					System.out.println(selectedBrand.getModels().size());
 				}
 
 				// We close the windows
@@ -371,7 +372,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				
 				// Test that the price value entered is a suitable int/double
 				try {
-				    Double testValue = Double.parseDouble(price);
+				    Double.parseDouble(price);
 				} catch (NumberFormatException nfe) {
 					partForm.noEmptyLabel.setText("Price must be a number.");
 					partForm.noEmptyLabel.setVisible(true);
@@ -459,7 +460,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				int rowIndex = carListFrame.modelTable.getSelectedRow();
 				if(rowIndex >= 0) {
 					selectedModel = carModelTableModel.data.get(rowIndex);
-					partTableModel.updatePartContent(selectedModel);
+					partTableModel.updateContent(selectedModel);
 					
 					carListFrame.modelEditButton.setEnabled(true);
 					carListFrame.modelDeleteButton.setEnabled(true);

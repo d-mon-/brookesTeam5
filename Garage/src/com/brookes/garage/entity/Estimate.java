@@ -30,7 +30,7 @@ public class Estimate {
 	private Repair repair;
 	
 	@ManyToMany(mappedBy = "estimates")
-	private final List<Part> parts = new ArrayList<Part>();
+	private List<Part> parts = new ArrayList<Part>();
 
 	@OneToOne(mappedBy = "estimate")
 	private Invoice invoice;
@@ -86,5 +86,9 @@ public class Estimate {
 
 	public List<Part> getParts() {
 		return parts;
+	}
+	
+	public void setParts(List<Part> parts) {
+		this.parts = parts;
 	}
 }

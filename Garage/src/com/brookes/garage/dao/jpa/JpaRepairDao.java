@@ -23,7 +23,7 @@ public class JpaRepairDao implements RepairDao {
 	@Override
 	public List<Repair> getAllRepairs() {
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT b FROM Repair AS b");
+		Query query = em.createQuery("SELECT r FROM Repair AS r");
 		List<Repair> repairs = query.getResultList();
 		em.close();
 		return repairs;
@@ -44,13 +44,7 @@ public class JpaRepairDao implements RepairDao {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();
-			Repair repairToUpdate = em.find(Repair.class, repair.getId());
-			repairToUpdate.setCar(repair.getCar());
-			repairToUpdate.setCreation_date(repair.getCreation_date());
-			repairToUpdate.setDescription(repair.getDescription());
-			repairToUpdate.setIdentifier(repair.getIdentifier());
-			repairToUpdate.setStatus(repair.getStatus());
-			em.persist(repair);
+			em.merge(repair);
 		t.commit();
 		em.close();
 	}

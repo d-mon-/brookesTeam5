@@ -5,19 +5,19 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import com.brookes.garage.dao.CarDao;
 import com.brookes.garage.dao.DaoFactory;
 import com.brookes.garage.entity.Brand;
 import com.brookes.garage.entity.Customer;
+import com.brookes.garage.entity.Customers_car;
 import com.brookes.garage.entity.Model;
 import com.brookes.garage.frame.CarFormFrame;
 import com.brookes.garage.frame.CustomerDetailsFrame;
 import com.brookes.garage.tablemodel.CustomerCarTableModel;
+import com.brookes.garage.tablemodel.RepairTableModel;
 
-public class CustomerDetailsController implements ActionListener, ListSelectionListener {
+public class CustomerDetailsController implements ActionListener {
 
 	private Customer customer;
 	
@@ -26,6 +26,7 @@ public class CustomerDetailsController implements ActionListener, ListSelectionL
 
 	private CarDao carDao = DaoFactory.getCarDao();
 	private CustomerCarTableModel carTableModel;
+	private RepairTableModel repairTableModel;
 
 	public CustomerDetailsController() {
 		super();
@@ -45,7 +46,9 @@ public class CustomerDetailsController implements ActionListener, ListSelectionL
 			carTableModel = new CustomerCarTableModel();
 			mainFrame.carTable.setModel(carTableModel);
 
-
+			repairTableModel = new RepairTableModel();
+			mainFrame.repairTable.setModel(repairTableModel);
+			
 			// Add itself as action listener to create, edit and delete a car
 			mainFrame.addCarButton.addActionListener(this);
 		}
@@ -65,6 +68,8 @@ public class CustomerDetailsController implements ActionListener, ListSelectionL
 			DefaultComboBoxModel<Model> model = new DefaultComboBoxModel<Model>(array);
 			carForm.modelComboBox.setModel(model);
 			carForm.modelComboBox.setEnabled(true);
+		} else if (e.getSource() == carForm.saveButton) {
+			this.saveCustomerCar();
 		}
 	}
 
@@ -75,72 +80,54 @@ public class CustomerDetailsController implements ActionListener, ListSelectionL
 	public void showCarCreationForm() {
 		carForm = new CarFormFrame();
 		carForm.saveButton.addActionListener(this);
-		carForm.saveButton.addActionListener(this);
 
+		List<Brand> brands = DaoFactory.getBrandDao().getAllBrands();
+		Brand[] brandsArray = brands.toArray(new Brand[brands.size()]);
+		DefaultComboBoxModel<Brand> firstModel = new DefaultComboBoxModel<Brand>(brandsArray);
+		carForm.brandComboBox.setModel(firstModel);
+		carForm.brandComboBox.addActionListener(this);
+
+		Brand brand = (Brand) carForm.brandComboBox.getSelectedItem();
+		if(brand != null){
+			List<Model> models = brand.getModels();
+			System.out.println(brand.getModels().size());
+			Model[] modelsArray = models.toArray(new Model[models.size()]);
+			DefaultComboBoxModel<Model> secondModel = new DefaultComboBoxModel<Model>(modelsArray);
+			carForm.modelComboBox.setModel(secondModel);
+			carForm.modelComboBox.setEnabled(true);
+			System.out.println(models.size());
+		}
+		
 		carForm.setVisible(true);
 	}
 
 	/**
-	 * Triggered when the user wish to save a customer in either the creation or
-	 * edition form
+	 * Triggered when the user wish to save a car
 	 */
-	public void saveCustomer() {
-		/*String firstname = customerForm.firstnameField.getText();
-		String lastname = customerForm.lastnameField.getText();
-		String phone = customerForm.phoneField.getText();
-		String address = customerForm.addressField.getText();
+	public void saveCustomerCar() {
+		Model model = (Model)carForm.modelComboBox.getSelectedItem();
+		String plate_number = carForm.identifierField.getText();
 
-		if (firstname.length() > 0 && lastname.length() > 0
-				&& phone.length() > 0 && address.length() > 0) {
+		if (model != null && plate_number.length() > 0) {
 			// Every fields contains a value
 
-			if (customerForm.getCustomer() != null) {
-				// The form contains an existing customer
-				// This was an edition form
-				// We update the values in the existing customer and update it
-				Customer customer = customerForm.getCustomer();
-				customer.setFirstname(firstname);
-				customer.setLastname(lastname);
-				customer.setPhone_number(phone);
-				customer.setAddress(address);
-
-				// We update the database and our table model
-				customerDao.updateCustomer(customer);
-				tableModel.updateCustomer(customer);
-			} else {
 				// The form was a creation form
 				// We create a new customer with the values and save it
-				Customer customer = new Customer();
-				customer.setFirstname(firstname);
-				customer.setLastname(lastname);
-				customer.setPhone_number(phone);
-				customer.setAddress(address);
+				Customers_car car = new Customers_car();
+				car.setCustomer(customer);
+				car.setModel(model);
+				car.setNumber_plate(plate_number);
 
 				// We add it to the database and our table model
-				customerDao.addCustomer(customer);
-				tableModel.addCustomer(customer);
-			}
+				carDao.addCar(car);
+				carTableModel.addCar(car);
 
 			// We close the windows
-			customerForm.dispose();
+			carForm.dispose();
 		} else {
 			// Not every fields contain a value so we display a message
-			customerForm.noEmptyLabel.setVisible(true);
-		}*/
-	}
-
-	/**
-	 * The row selected by the user has changed
-	 */
-	@Override
-	public void valueChanged(ListSelectionEvent e) {
-		/*if (e.getSource() == customerListFrame.table.getSelectionModel()) {
-			// Since a row is now selected, we enable the edit, view and delete
-			// button
-			customerListFrame.editButton.setEnabled(true);
-			customerListFrame.viewButton.setEnabled(true);
-			customerListFrame.deleteButton.setEnabled(true);
-		}*/
+			carForm.noEmptyLabel.setVisible(true);
+		}
 	}
 	
 	public Customer getCustomer() {
@@ -153,6 +140,7 @@ public class CustomerDetailsController implements ActionListener, ListSelectionL
 		mainFrame.addressLabel.setText(customer.getAddress());
 		mainFrame.phoneLabel.setText(customer.getPhone_number());
 		carTableModel.refreshTable(customer);
+		repairTableModel.refreshTable(this.customer);
 	}
 	
 }

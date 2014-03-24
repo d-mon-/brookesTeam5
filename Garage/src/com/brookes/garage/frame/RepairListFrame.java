@@ -19,7 +19,6 @@ private static final long serialVersionUID = 1L;
 	public JPanel contentPane;
 	public JTable table;
 	public JButton editButton;
-	public JButton deleteButton;
 	public JButton viewButton;
 	public JButton createButton;
 
@@ -48,15 +47,6 @@ private static final long serialVersionUID = 1L;
 		gbc_createButton.gridx = 0;
 		gbc_createButton.gridy = 0;
 		contentPane.add(createButton, gbc_createButton);
-		
-		deleteButton = new JButton("Delete");
-		deleteButton.setEnabled(false);
-		GridBagConstraints gbc_deleteButton = new GridBagConstraints();
-		gbc_deleteButton.anchor = GridBagConstraints.EAST;
-		gbc_deleteButton.insets = new Insets(0, 0, 5, 5);
-		gbc_deleteButton.gridx = 11;
-		gbc_deleteButton.gridy = 0;
-		contentPane.add(deleteButton, gbc_deleteButton);
 		
 		editButton = new JButton("Edit");
 		editButton.setEnabled(false);

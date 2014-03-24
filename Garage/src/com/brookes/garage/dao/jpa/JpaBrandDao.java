@@ -55,9 +55,7 @@ public class JpaBrandDao implements BrandDao {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();
-			Brand brandToUpdate = em.find(Brand.class, brand.getId());
-			brandToUpdate.setName(brand.getName());
-			em.persist(brandToUpdate);
+			em.merge(brand);
 		t.commit();
 		em.close();
 	}

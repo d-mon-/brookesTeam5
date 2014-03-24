@@ -1,6 +1,9 @@
 package com.brookes.garage.tablemodel;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -69,13 +72,15 @@ public class RepairTableModel extends AbstractTableModel {
 			return customer.toString();
 		}
 		case 2: {
-			Customers_car car = data.get(rowIndex).getCar();
-			return car.getModel().toString();
+			return data.get(rowIndex).getCar();
 		}
 		case 3:
 			return data.get(rowIndex).getStatus();
-		case 4:
-			return data.get(rowIndex).getCreation_date().toString();
+		case 4:{
+			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			Date date = data.get(rowIndex).getCreation_date();
+			return dateFormat.format(date);
+		}
 		default:
 			return null; // Will never occur
 		}
@@ -95,5 +100,21 @@ public class RepairTableModel extends AbstractTableModel {
 	public void updateRepair(Repair repair) {
 		int firstRow = data.indexOf(repair);
 		fireTableRowsUpdated(firstRow, firstRow);
+	}
+	
+	/**
+	 * Refresh the table with the customer's data
+	 */
+	public void refreshTable(Customer customer) {
+		List<Customers_car> cars = customer.getCars();
+		
+		data = new ArrayList<Repair>();
+		
+		for (Customers_car customers_car : cars) {
+			data.addAll(customers_car.getRepairs());
+		}
+		
+				
+		fireTableDataChanged();
 	}
 }

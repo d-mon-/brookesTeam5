@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import com.brookes.garage.dao.DaoFactory;
-import com.brookes.garage.dao.ModelDao;
 import com.brookes.garage.entity.Brand;
 import com.brookes.garage.entity.Model;
 
@@ -14,8 +12,6 @@ public class CarModelTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 
-	// Related Model entity DAO
-	private ModelDao modelDao;
 	// ArrayList of Model to populate the table
 	public List<Model> data = new ArrayList<Model>();
 	// The columns titles
@@ -26,8 +22,6 @@ public class CarModelTableModel extends AbstractTableModel {
 	 */
 	public CarModelTableModel() {
 		super();
-
-		modelDao = DaoFactory.getModelDao();
 	}
 
 	/**

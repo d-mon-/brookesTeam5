@@ -23,8 +23,6 @@ public class RepairFormFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel contentPane;
-	
-	public JTextField identifierField;
 	public JComboBox<Customer> customerComboBox;
 	public JComboBox<Customers_car> carComboBox;
 	public JTextField descriptionField;
@@ -41,34 +39,25 @@ public class RepairFormFrame extends JFrame {
 	public RepairFormFrame() {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		
-		setBounds(100, 100, 329, 246);
+		setBounds(100, 100, 329, 208);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		JLabel lblIdentifier = new JLabel("Identifier");
-		lblIdentifier.setBounds(35, 11, 62, 16);
-		lblIdentifier.setHorizontalAlignment(SwingConstants.RIGHT);
-		
-		identifierField = new JTextField();
-		identifierField.setBounds(102, 5, 222, 28);
-		lblIdentifier.setLabelFor(identifierField);
-		identifierField.setColumns(10);
-		
 		JLabel lblLastname = new JLabel("Customer");
-		lblLastname.setBounds(35, 44, 62, 16);
+		lblLastname.setBounds(33, 10, 62, 16);
 		lblLastname.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		JLabel lblDescription = new JLabel("Description");
-		lblDescription.setBounds(8, 110, 89, 16);
+		lblDescription.setBounds(6, 76, 89, 16);
 		lblDescription.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		descriptionField = new JTextField();
-		descriptionField.setBounds(102, 104, 222, 72);
+		descriptionField.setBounds(100, 70, 222, 72);
 		descriptionField.setColumns(13);
 		
 		cancelButton = new JButton("Cancel");
-		cancelButton.setBounds(8, 182, 86, 29);
+		cancelButton.setBounds(6, 148, 86, 29);
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -77,16 +66,14 @@ public class RepairFormFrame extends JFrame {
 		});
 		
 		saveButton = new JButton("Save");
-		saveButton.setBounds(100, 182, 75, 29);
+		saveButton.setBounds(98, 148, 75, 29);
 		saveButton.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		noEmptyLabel = new JLabel("No field can be empty");
-		noEmptyLabel.setBounds(181, 187, 138, 16);
+		noEmptyLabel.setBounds(179, 153, 138, 16);
 		noEmptyLabel.setVisible(false);
 		
 		contentPane.setLayout(null);
-		contentPane.add(lblIdentifier);
-		contentPane.add(identifierField);
 		contentPane.add(lblLastname);
 		contentPane.add(lblDescription);
 		contentPane.add(descriptionField);
@@ -98,12 +85,12 @@ public class RepairFormFrame extends JFrame {
 		Customer[] customersArray = customers.toArray(new Customer[customers.size()]);
 		
 		customerComboBox = new JComboBox<Customer>(customersArray);
-		customerComboBox.setBounds(102, 40, 222, 27);
+		customerComboBox.setBounds(100, 6, 222, 27);
 		contentPane.add(customerComboBox);
 		
 		JLabel lblCar = new JLabel("Car");
 		lblCar.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblCar.setBounds(35, 76, 62, 16);
+		lblCar.setBounds(33, 42, 62, 16);
 		contentPane.add(lblCar);
 		
 		
@@ -112,7 +99,7 @@ public class RepairFormFrame extends JFrame {
 		Customers_car[] carsArray = cars.toArray(new Customers_car[cars.size()]);
 		
 		carComboBox = new JComboBox<Customers_car>(carsArray);
-		carComboBox.setBounds(102, 72, 222, 27);
+		carComboBox.setBounds(100, 38, 222, 27);
 		contentPane.add(carComboBox);
 	}
 	

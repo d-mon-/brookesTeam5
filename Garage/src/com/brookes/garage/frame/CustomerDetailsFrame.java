@@ -31,10 +31,11 @@ public class CustomerDetailsFrame extends JFrame {
 	private JScrollPane scrollPane;
 	private JScrollPane scrollPane_1;
 	public JTable carTable;
-	private JTable repairTable;
+	public JTable repairTable;
 	private JLabel lblCars;
 	private JLabel lblRepairs;
 
+	
 	/**
 	 * Launch the application.
 	 */

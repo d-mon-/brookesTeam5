@@ -55,12 +55,7 @@ public class JpaCustomerDao implements CustomerDao {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();
-			Customer customerToUpdate = em.find(Customer.class, customer.getId());
-			customerToUpdate.setFirstname(customer.getFirstname());
-			customerToUpdate.setLastname(customer.getLastname());
-			customerToUpdate.setAddress(customer.getAddress());
-			customerToUpdate.setPhone_number(customer.getPhone_number());
-			em.persist(customerToUpdate);
+			em.merge(customer);
 		t.commit();
 		em.close();
 	}

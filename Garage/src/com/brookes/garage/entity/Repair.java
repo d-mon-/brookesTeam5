@@ -23,9 +23,7 @@ public class Repair {
 	
     @Temporal(TemporalType.DATE)
 	private Date creation_date;
-	
-	private int status;
-	
+		
 	private String description;
 	
 	private Customers_car car;
@@ -33,6 +31,7 @@ public class Repair {
 	@OneToMany(mappedBy = "repair")
 	private final List<Estimate> estimates = new ArrayList<Estimate>();
 
+	private Status status;
 	
 	public Long getId() {
 		return id;
@@ -58,11 +57,11 @@ public class Repair {
 		this.creation_date = creation_date;
 	}
 
-	public int getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 

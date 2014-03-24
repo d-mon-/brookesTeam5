@@ -8,6 +8,7 @@ import com.brookes.garage.dao.jpa.JpaEstimateDao;
 import com.brookes.garage.dao.jpa.JpaModelDao;
 import com.brookes.garage.dao.jpa.JpaPartDao;
 import com.brookes.garage.dao.jpa.JpaRepairDao;
+import com.brookes.garage.dao.jpa.JpaStatusDao;
 import com.brookes.garage.util.PersistenceManager;
 
 public class DaoFactory {
@@ -42,5 +43,9 @@ public class DaoFactory {
 	
 	public static CarDao getCarDao() {
 		return new JpaCarDao(PersistenceManager.getEmf());
+	}
+	
+	public static StatusDao getStatusDao() {
+		return new JpaStatusDao(PersistenceManager.getEmf());
 	}
 }

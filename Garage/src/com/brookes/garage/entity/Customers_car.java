@@ -61,6 +61,10 @@ public class Customers_car {
 	public List<Repair> getRepairs() {
 		return repairs;
 	}
-	
+
+	@Override
+	public String toString() {
+		return model.toString() + " " + number_plate;
+	}
 	
 }

@@ -7,9 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
-public class Part {
+public class Status {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,15 +18,11 @@ public class Part {
 	
 	private String reference;
 	
-	private String name;
+	private String title;
 	
-	private Double price;
-	
-	private Model model;
-	
-	private List<Estimate> estimates = new ArrayList<Estimate>();
+	@OneToMany
+	private List<Status> successors = new ArrayList<Status>();
 
-	
 	public Long getId() {
 		return id;
 	}
@@ -42,37 +39,25 @@ public class Part {
 		this.reference = reference;
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	public Double getPrice() {
-		return price;
+	public void setSuccessors(List<Status> list) {
+		this.successors = list;
 	}
-
-	public void setPrice(Double price) {
-		this.price = price;
-	}
-
-	public Model getModel() {
-		return model;
-	}
-
-	public void setModel(Model model) {
-		this.model = model;
-	}
-
-	public List<Estimate> getEstimates() {
-		return estimates;
+	
+	public List<Status> getSuccessors() {
+		return successors;
 	}
 
 	@Override
 	public String toString() {
-		return reference + " - " + name + " - " + price;
+		return title;
 	}
 	
 	

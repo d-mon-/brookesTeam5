@@ -23,7 +23,7 @@ public class JpaModelDao implements ModelDao {
 	@Override
 	public List<Model> getAllModels() {
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT b FROM Model AS b");
+		Query query = em.createQuery("SELECT m FROM Model AS m");
 		List<Model> models = query.getResultList();
 		em.close();
 		return models;
@@ -35,6 +35,13 @@ public class JpaModelDao implements ModelDao {
 		EntityTransaction t = em.getTransaction();
 		t.begin();
 		em.persist(model);
+		/*
+		Brand brand = model.getBrand();
+		List<Model> models = brand.getModels();
+		models.add(model);
+		brand.setModels(models);
+		em.merge(brand);
+		*/
 		t.commit();
 		em.close();
 	}
@@ -55,9 +62,7 @@ public class JpaModelDao implements ModelDao {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();
-			Model modelToUpdate = em.find(Model.class, model.getId());
-			modelToUpdate.setName(model.getName());
-			em.persist(modelToUpdate);
+			em.merge(model);
 		t.commit();
 		em.close();
 	}

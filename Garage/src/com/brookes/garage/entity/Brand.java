@@ -19,7 +19,7 @@ public class Brand {
 	private String name;
 	
 	@OneToMany(mappedBy = "brand")
-	private final List<Model> models = new ArrayList<Model>();
+	private List<Model> models = new ArrayList<Model>();
 
 	public Long getId() {
 		return id;
@@ -39,6 +39,10 @@ public class Brand {
 	
 	public List<Model> getModels() {
 		return models;
+	}
+
+	public void setModels(List<Model> models) {
+		this.models = models;
 	}
 
 	@Override

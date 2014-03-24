@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import com.brookes.garage.dao.CarDao;
 import com.brookes.garage.entity.Customer;
 import com.brookes.garage.entity.Customers_car;
 

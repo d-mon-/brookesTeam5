@@ -9,6 +9,7 @@ import javax.persistence.Query;
 
 import com.brookes.garage.dao.EstimateDao;
 import com.brookes.garage.entity.Estimate;
+import com.brookes.garage.entity.Part;
 
 public class JpaEstimateDao implements EstimateDao {
 
@@ -35,6 +36,13 @@ public class JpaEstimateDao implements EstimateDao {
 		EntityTransaction t = em.getTransaction();
 		t.begin();
 		em.persist(estimate);
+		
+		List<Part> parts = estimate.getParts();
+		for (Part part : parts) {
+			part.getEstimates().add(estimate);
+			em.merge(part);
+		}
+		
 		t.commit();
 		em.close();
 	}
@@ -44,13 +52,7 @@ public class JpaEstimateDao implements EstimateDao {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();
-			Estimate estimateToUpdate = em.find(Estimate.class, estimate.getId());
-			estimateToUpdate.setCreation_date(estimate.getCreation_date());
-			estimateToUpdate.setIdentifier(estimate.getIdentifier());
-			estimateToUpdate.setInvalidated(estimate.isInvalidated());
-			estimateToUpdate.setInvoice(estimate.getInvoice());
-			estimateToUpdate.setRepair(estimate.getRepair());
-			em.persist(estimate);
+			em.merge(estimate);
 		t.commit();
 		em.close();
 	}

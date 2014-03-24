@@ -126,7 +126,7 @@ public class CustomerModuleController implements ActionListener,
 		} else if (e.getSource() == customerListFrame.deleteButton) {
 			this.deleteCustomer();
 		} else if (e.getSource() == customerListFrame.viewButton) {
-			this.viewCustomerDetails();
+			this.showCustomerDetails();
 		} else if (customerForm != null && e.getSource() == customerForm.saveButton) {
 			this.saveCustomer();
 		} else if (customerDetailsController != null && e.getSource() == customerDetailsController.mainFrame.backButton) {
@@ -248,7 +248,7 @@ public class CustomerModuleController implements ActionListener,
 	/**
 	 * Fills the appropriate data into the details page and displays it
 	 */
-	public void viewCustomerDetails() {
+	public void showCustomerDetails() {
 		int rowIndex = customerListFrame.table.getSelectedRow();
 		Customer customer = tableModel.data.get(rowIndex);
 		

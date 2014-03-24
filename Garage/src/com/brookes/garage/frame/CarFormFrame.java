@@ -2,7 +2,6 @@ package com.brookes.garage.frame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -14,7 +13,6 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
-import com.brookes.garage.dao.DaoFactory;
 import com.brookes.garage.entity.Brand;
 import com.brookes.garage.entity.Model;
 
@@ -83,11 +81,9 @@ private static final long serialVersionUID = 1L;
 		contentPane.add(cancelButton);
 		contentPane.add(saveButton);
 		contentPane.add(noEmptyLabel);
+
 		
-		List<Brand> brands = DaoFactory.getBrandDao().getAllBrands();
-		Brand[] brandsArray = brands.toArray(new Brand[brands.size()]);
-		
-		brandComboBox = new JComboBox<Brand>(brandsArray);
+		brandComboBox = new JComboBox<Brand>();
 		brandComboBox.setBounds(102, 40, 222, 27);
 		contentPane.add(brandComboBox);
 		
@@ -97,11 +93,7 @@ private static final long serialVersionUID = 1L;
 		contentPane.add(lblModel);
 		
 		
-		Brand brand = (Brand) brandComboBox.getSelectedItem();
-		List<Model> models = brand.getModels();
-		Model[] modelsArray = models.toArray(new Model[models.size()]);
-		
-		modelComboBox = new JComboBox<Model>(modelsArray);
+		modelComboBox = new JComboBox<Model>();
 		modelComboBox.setBounds(102, 72, 222, 27);
 		contentPane.add(modelComboBox);
 	}

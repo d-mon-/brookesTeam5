@@ -5,9 +5,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import com.brookes.garage.dao.DaoFactory;
-import com.brookes.garage.dao.PartDao;
-import com.brookes.garage.entity.Brand;
+import com.brookes.garage.entity.Estimate;
 import com.brookes.garage.entity.Model;
 import com.brookes.garage.entity.Part;
 
@@ -15,20 +13,17 @@ public class PartTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 
-	// Related Part entity DAO
-	private PartDao partDao;
+
 	// ArrayList of Part to populate the table
 	public List<Part> data = new ArrayList<Part>();
 	// The columns titles
-	private final String[] titles = { "Reference", "Name", "Price (£)" };
+	private final String[] titles = { "Reference", "Name", "Price (Â£)" };
 	
 	/**
 	 * The constructor method
 	 */
 	public PartTableModel() {
 		super();
-
-		partDao = DaoFactory.getPartDao();
 	}
 
 	/**
@@ -96,8 +91,13 @@ public class PartTableModel extends AbstractTableModel {
 		fireTableRowsUpdated(firstRow, firstRow);
 	}
 
-	public void updatePartContent(Model model) {
+	public void updateContent(Model model) {
 		data = model.getParts();
+		fireTableDataChanged();
+	}
+	
+	public void updateContent(Estimate estimate) {
+		data = estimate.getParts();
 		fireTableDataChanged();
 	}
 	
