@@ -8,6 +8,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import com.brookes.garage.dao.PartDao;
+import com.brookes.garage.entity.Model;
 import com.brookes.garage.entity.Part;
 
 public class JpaPartDao implements PartDao {
@@ -59,5 +60,17 @@ public class JpaPartDao implements PartDao {
 		t.commit();
 		em.close();
 	}
-
+	
+	@Override
+	public void invalidateEntry(Part part){
+		Part myPart = null;
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction t = em.getTransaction();
+		t.begin();
+			Part partToUpdate = em.find(Part.class, part.getId());
+			partToUpdate.setDelete_flag(true);		
+			em.persist(partToUpdate);
+		t.commit();
+		em.close();	
+	}
 }

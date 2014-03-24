@@ -5,7 +5,9 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 
+//github.com/d-mon-/brookesTeam5.git
 import com.brookes.garage.dao.CarDao;
 import com.brookes.garage.dao.DaoFactory;
 import com.brookes.garage.entity.Brand;
@@ -71,6 +73,27 @@ public class CustomerDetailsController implements ActionListener {
 		} else if (e.getSource() == carForm.saveButton) {
 			this.saveCustomerCar();
 		}
+	}
+	
+	/**
+	 * Add a new car according to a customer and a (Brand->) model
+	 * triggered by the save button
+	 */
+	public void addCarToCustomer(String plate, Model model) {
+		if(plate.isEmpty()||model.equals(null)){
+			//no plate or model defined before save -> pop up "error"
+			JOptionPane.showMessageDialog(null, "You must specify a plate and a model.");
+		}else{
+			//must verify if the plate already exist in the DB
+			Customers_car customer_car = new Customers_car();
+			customer_car.setModel(model);
+			customer_car.setNumber_plate(plate);
+			customer_car.setCustomer(customer);
+			carDao.addCar(customer_car);
+			carTableModel.addCar(customer_car);
+			carForm.dispose();
+		}
+		
 	}
 
 	/**
