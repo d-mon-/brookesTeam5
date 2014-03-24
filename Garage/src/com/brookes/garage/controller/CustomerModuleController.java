@@ -73,6 +73,7 @@ public class CustomerModuleController implements ActionListener,
 			customerListFrame.editButton.addActionListener(this);
 			customerListFrame.deleteButton.addActionListener(this);
 			customerListFrame.viewButton.addActionListener(this);
+			
 		}
 	}
 

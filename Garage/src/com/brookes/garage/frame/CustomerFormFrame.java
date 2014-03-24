@@ -7,12 +7,14 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import com.brookes.garage.entity.Customer;
+
 import java.awt.Color;
 
 
@@ -91,7 +93,8 @@ public class CustomerFormFrame extends JFrame {
 		lblAddress.setBounds(46, 110, 51, 16);
 		lblAddress.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		addressField = new JTextField();
+		JTextArea addressField = new JTextArea(4, 5);
+		
 		addressField.setBounds(102, 104, 222, 72);
 		addressField.setColumns(13);
 		

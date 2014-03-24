@@ -6,7 +6,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 
 import com.jgoodies.forms.factories.FormFactory;
@@ -24,8 +23,6 @@ public class CustomerDetailsFrame extends JFrame {
 	public JLabel nameLabel;
 	public JLabel addressLabel;
 	public JLabel phoneLabel;
-
-	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -58,10 +55,6 @@ public class CustomerDetailsFrame extends JFrame {
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(21dlu;default)"),
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(20dlu;default)"),
-				FormFactory.RELATED_GAP_COLSPEC,
-				FormFactory.DEFAULT_COLSPEC,
-				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(100dlu;default):grow"),},
 			new RowSpec[] {
 				FormFactory.RELATED_GAP_ROWSPEC,
@@ -73,22 +66,26 @@ public class CustomerDetailsFrame extends JFrame {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),}));
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,}));
 		
 		backButton = new JButton("<<");
 		contentPane.add(backButton, "2, 2");
 		
-		nameLabel = new JLabel("firstname lastname");
-		contentPane.add(nameLabel, "2, 4, 3, 1, left, default");
 		
-		table = new JTable();
-		contentPane.add(table, "8, 2, 1, 9, fill, fill");
+		nameLabel = new JLabel("firstname lastname");
+		contentPane.add(nameLabel, "2, 4, left, default");
 		
 		addressLabel = new JLabel("Address");
-		contentPane.add(addressLabel, "2, 6, 3, 1, left, default");
+		contentPane.add(addressLabel, "2, 6, left, default");
 		
 		phoneLabel = new JLabel("Phone Number");
-		contentPane.add(phoneLabel, "2, 8, 3, 1, left, default");
+		contentPane.add(phoneLabel, "2, 8, left, default");
 	
 	}
 
