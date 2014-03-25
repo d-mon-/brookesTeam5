@@ -84,6 +84,7 @@ public class CustomerFormFrame extends JDialog {
 		JScrollPane scrollPane = new JScrollPane(addressField);
 		scrollPane.setBounds(102, 104, 222, 72);
 		addressField.setLineWrap(true);
+		addressField.setWrapStyleWord(true);
 		
 		noEmptyLabel = new JLabel("No field can be empty");
 		noEmptyLabel.setForeground(Color.RED);

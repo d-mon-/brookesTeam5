@@ -64,6 +64,7 @@ public class RepairFormFrame extends JDialog {
 		JScrollPane scrollPane = new JScrollPane(descriptionField);
 		scrollPane.setBounds(100, 70, 222, 72);
 		descriptionField.setLineWrap(true);
+		descriptionField.setWrapStyleWord(true);
 		
 		noEmptyLabel = new JLabel("No field can be empty");
 		noEmptyLabel.setForeground(Color.RED);

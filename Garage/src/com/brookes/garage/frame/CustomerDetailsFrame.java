@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import com.jgoodies.forms.factories.FormFactory;
@@ -25,7 +27,10 @@ public class CustomerDetailsFrame extends JFrame {
 	
 	public JButton backButton;
 	public JLabel nameLabel;
-	public JLabel addressLabel;
+	//public JLabel addressLabel;
+	
+	public JTextArea addressLabel;
+	
 	public JLabel phoneLabel;
 	public JButton addCarButton;
 	private JScrollPane scrollPane;
@@ -116,7 +121,12 @@ public class CustomerDetailsFrame extends JFrame {
 		carTable = new JTable();
 		scrollPane.setViewportView(carTable);
 		
-		addressLabel = new JLabel("Address");
+		addressLabel = new JTextArea("Address");
+		addressLabel.setFont(UIManager.getFont("Label.font"));
+		addressLabel.setLineWrap(true);
+		addressLabel.setOpaque(false);
+		addressLabel.setWrapStyleWord(true);
+		addressLabel.setEditable(false);
 		contentPane.add(addressLabel, "2, 6, 3, 1, left, default");
 				
 		phoneLabel = new JLabel("Phone Number");
