@@ -7,6 +7,7 @@ import javax.swing.table.AbstractTableModel;
 
 import com.brookes.garage.entity.Brand;
 import com.brookes.garage.entity.Model;
+import com.brookes.garage.entity.Part;
 
 public class CarModelTableModel extends AbstractTableModel {
 
@@ -87,6 +88,10 @@ public class CarModelTableModel extends AbstractTableModel {
 
 	public void updateModelContent(Brand brand) {
 		data = brand.getModels();
+		fireTableDataChanged();
+	}
+	public void clearModelContent() {
+		data = new ArrayList<Model>();
 		fireTableDataChanged();
 	}
 	

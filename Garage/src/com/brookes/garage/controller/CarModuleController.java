@@ -238,6 +238,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 			Brand brand = brandTableModel.data.get(rowIndex);
 			brandTableModel.removeBrand(rowIndex);
 			brandDao.removeBrand(brand);
+			toggleButton(false,false,false);
 		}
 
 		/**
@@ -321,10 +322,12 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 			// and remove it from the table model and the database
 			int rowIndex = carListFrame.modelTable.getSelectedRow();
 	        rowIndex = carListFrame.modelTable.getRowSorter().convertRowIndexToModel(rowIndex);
-
+	        
 			Model model = carModelTableModel.data.get(rowIndex);
 			carModelTableModel.removeModel(rowIndex);
 			modelDao.removeModel(model);
+			
+			toggleButton(true,false,false);
 		}
 		
 		
@@ -370,9 +373,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 		public void savePart() {
 			String name = partForm.nameField.getText();
 			String ref = partForm.refField.getText();
-			String price = partForm.priceField.getText();
-			
-			
+			String price = partForm.priceField.getText();		
 
 			if (name.length() > 0 && ref.length() > 0 && price.length() > 0) {
 				// The Reference, name and price fields must contain a value
@@ -433,6 +434,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 			Part part = partTableModel.data.get(rowIndex);
 			partTableModel.removePart(rowIndex);
 			partDao.removePart(part);
+			toggleButton(true,true,false);
 		}
 		
 		
@@ -445,8 +447,6 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				// Since a row is now selected, we enable the edit and delete
 				// buttons for Brand
 				int rowIndex = carListFrame.brandTable.getSelectedRow();
-				System.out.println("source: "+e.getSource() );
-				System.out.println("myrow: "+rowIndex);
 				if (rowIndex == -1) return;
 		        rowIndex = carListFrame.brandTable.getRowSorter().convertRowIndexToModel(rowIndex);
 
@@ -454,18 +454,10 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 					selectedBrand = brandTableModel.data.get(rowIndex);
 					carModelTableModel.updateModelContent(selectedBrand);
 					partTableModel.clearPartContent();
-					
-					carListFrame.partEditButton.setEnabled(false);
-					carListFrame.partDeleteButton.setEnabled(false);
-					
-					carListFrame.brandEditButton.setEnabled(true);
-					carListFrame.brandDeleteButton.setEnabled(true);
-					carListFrame.modelCreateButton.setEnabled(true);
+					toggleButton(true,false,false);
 				}
 				else {
-					carListFrame.brandEditButton.setEnabled(false);
-					carListFrame.brandDeleteButton.setEnabled(false);
-					carListFrame.modelCreateButton.setEnabled(false);
+					toggleButton(false,false,false);
 				}
 			}
 			else if (e.getSource() == carListFrame.modelTable.getSelectionModel()) {
@@ -478,26 +470,68 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				if(rowIndex >= 0) {
 					selectedModel = carModelTableModel.data.get(rowIndex);
 					partTableModel.updateContent(selectedModel);
-					
-					carListFrame.modelEditButton.setEnabled(true);
-					carListFrame.modelDeleteButton.setEnabled(true);
-					carListFrame.partCreateButton.setEnabled(true);
-					
-					carListFrame.partEditButton.setEnabled(false);
-					carListFrame.partDeleteButton.setEnabled(false);
+										
+					toggleButton(true,true,false);
 				}
 				else {
-					carListFrame.modelEditButton.setEnabled(false);
-					carListFrame.modelDeleteButton.setEnabled(false);
-					carListFrame.partCreateButton.setEnabled(false);
+					toggleButton(true,false,false);
 				}
 				
 			}
 			else if (e.getSource() == carListFrame.partTable.getSelectionModel()) {
-				// Since a row is now selected, we enable the edit and delete
-				// buttons for Part
+				int rowIndex = carListFrame.partTable.getSelectedRow();
+				if (rowIndex == -1) return;
+				toggleButton(true,true,true);
+			}
+		}
+		
+		private void toggleButton(boolean brandTable,boolean modelTable, boolean partTable){
+			
+			
+			if(brandTable){	
+				//selected item in brand			
+							
+				carListFrame.modelCreateButton.setEnabled(true);				
+				carListFrame.brandEditButton.setEnabled(true);
+				carListFrame.brandDeleteButton.setEnabled(true);
+				
+				if(modelTable){		
+					togglePartButton(partTable);
+					carListFrame.partCreateButton.setEnabled(true);						
+					carListFrame.modelEditButton.setEnabled(true);
+					carListFrame.modelDeleteButton.setEnabled(true);					
+				}else{
+					togglePartButton(false);
+					carListFrame.partCreateButton.setEnabled(false);					
+					carListFrame.modelEditButton.setEnabled(false);	
+					
+					carListFrame.modelDeleteButton.setEnabled(false);					
+					
+					partTableModel.clearPartContent();
+				}
+			}else{
+				//no selected item in brand
+				togglePartButton(false);	
+				carListFrame.partCreateButton.setEnabled(false);	
+				
+				carListFrame.modelEditButton.setEnabled(false);
+				carListFrame.modelDeleteButton.setEnabled(false);
+				carListFrame.modelCreateButton.setEnabled(false);
+				
+				carListFrame.brandEditButton.setEnabled(false);
+				carListFrame.brandDeleteButton.setEnabled(false);
+				carModelTableModel.clearModelContent();
+				partTableModel.clearPartContent();
+			}		
+		}
+		
+		private void togglePartButton(boolean partTable){
+			if(partTable){
 				carListFrame.partEditButton.setEnabled(true);
 				carListFrame.partDeleteButton.setEnabled(true);
-			}
+			}else{
+				carListFrame.partEditButton.setEnabled(false);
+				carListFrame.partDeleteButton.setEnabled(false);
+			}			
 		}
 }
