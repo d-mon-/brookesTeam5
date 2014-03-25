@@ -445,6 +445,9 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				// Since a row is now selected, we enable the edit and delete
 				// buttons for Brand
 				int rowIndex = carListFrame.brandTable.getSelectedRow();
+				System.out.println("source: "+e.getSource() );
+				System.out.println("myrow: "+rowIndex);
+				if (rowIndex == -1) return;
 		        rowIndex = carListFrame.brandTable.getRowSorter().convertRowIndexToModel(rowIndex);
 
 				if(rowIndex >= 0) {

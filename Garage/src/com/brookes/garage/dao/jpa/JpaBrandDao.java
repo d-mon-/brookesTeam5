@@ -27,11 +27,8 @@ public class JpaBrandDao implements BrandDao {
 		EntityManager em = emf.createEntityManager();
 		Query query = em.createQuery("SELECT b FROM Brand AS b  WHERE b.delete_flag=0");
 		List<Brand> brands = query.getResultList();	
-		System.out.println(brands.size());
 		brands = reduce(brands);
-		System.out.println(brands.size());
-		em.close();
-		
+		em.close();	
 		
 		return brands;
 	}
