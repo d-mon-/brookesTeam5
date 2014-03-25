@@ -90,7 +90,7 @@ public class RepairFormFrame extends JDialog {
 		
 		
 		Customer customer = (Customer) customerComboBox.getSelectedItem();
-		List<Customers_car> cars = customer.getCars();
+		List<Customers_car> cars = DaoFactory.getCarDao().getCarsByCustomer(customer);
 		Customers_car[] carsArray = cars.toArray(new Customers_car[cars.size()]);
 		
 		carComboBox = new JComboBox<Customers_car>(carsArray);

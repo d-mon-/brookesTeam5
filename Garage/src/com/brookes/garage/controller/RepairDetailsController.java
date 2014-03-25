@@ -18,6 +18,7 @@ import com.brookes.garage.dao.RepairDao;
 import com.brookes.garage.dao.StatusDao;
 import com.brookes.garage.entity.Customer;
 import com.brookes.garage.entity.Estimate;
+import com.brookes.garage.entity.Invoice;
 import com.brookes.garage.entity.Part;
 import com.brookes.garage.entity.Repair;
 import com.brookes.garage.entity.Status;
@@ -105,21 +106,45 @@ public class RepairDetailsController implements ActionListener, ListSelectionLis
 
 		if (newStatus.getId() == statusDao.getEstimateStatus().getId()) {
 			this.displayEstimateForm();
-		} else {
-			repair.setStatus(newStatus);
-			repairDao.updateRepair(repair);
-			
-			mainFrame.statusLabel.setText(repair.getStatus().toString());
+			statusForm.dispose();
+			return;
+		} else if (newStatus.getId() == statusDao.getInvoiceStatus().getId()) {
+			List<Estimate>estimates = repair.getEstimates();
+			for (Estimate estimate : estimates) {
+				if (estimate.isInvalidated() == false) {
+					Invoice invoice = new Invoice();
+					invoice.setEstimate(estimate);
+					invoice.setCreation_date(new Date());
+					invoice.setIdentifier("I"+estimate.hashCode());
+
+					// We add it to the database and update our table model
+					DaoFactory.getInvoiceDao().addInvoice(invoice);
+					
+					estimate.setInvoice(invoice);
+					estimateDao.updateEstimate(estimate);
+					estimateTableModel.updateEstimate(estimate);
+				}
+			}
 		}
 
+		if (newStatus.getSuccessors().size() == 0) {
+			mainFrame.statusButton.setEnabled(false);
+		} else {
+			mainFrame.statusButton.setEnabled(true);
+		}
 		
+		repair.setStatus(newStatus);
+		repairDao.updateRepair(repair);
+			
+		mainFrame.statusLabel.setText(repair.getStatus().toString());
+
 		statusForm.dispose();
 	}
 	
 	public void displayEstimateForm() {
 		estimateForm = new EstimateFormDialog();
 		
-		List<Part> parts = repair.getCar().getModel().getParts();
+		List<Part> parts = DaoFactory.getPartDao().getPartsByModel(repair.getCar().getModel());
 		Part[] array = parts.toArray(new Part[parts.size()]);
 		DefaultComboBoxModel<Part> model = new DefaultComboBoxModel<Part>(array);
 		estimateForm.partComboBox.setModel(model);
@@ -146,6 +171,7 @@ public class RepairDetailsController implements ActionListener, ListSelectionLis
 		
 		if (this.invalidating) {
 			int rowIndex = mainFrame.estimateTable.getSelectedRow();
+
 			Estimate selectedEstimate = estimateTableModel.data.get(rowIndex);
 
 			selectedEstimate.setInvalidated(true);
@@ -215,6 +241,8 @@ public class RepairDetailsController implements ActionListener, ListSelectionLis
 		
 		if (repair.getStatus().getSuccessors().size() == 0) {
 			mainFrame.statusButton.setEnabled(false);
+		} else {
+			mainFrame.statusButton.setEnabled(true);
 		}
 		
 		estimateTableModel.refreshContent(repair);
@@ -223,13 +251,20 @@ public class RepairDetailsController implements ActionListener, ListSelectionLis
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		if (e.getSource() == mainFrame.estimateTable.getSelectionModel()) {
-			int rowIndex = mainFrame.estimateTable.getSelectedRow();
-			Estimate selectedEstimate = estimateTableModel.data.get(rowIndex);
-			
-			partTableModel.updateContent(selectedEstimate);
-			
-			if(statusDao.getEstimateStatus().getId() == repair.getStatus().getId()) {
-				mainFrame.invalidateButton.setEnabled(!selectedEstimate.isInvalidated());				
+			int rowIndex = mainFrame.estimateTable.getSelectedRow();			
+
+			// We check if a row is selected
+			if (rowIndex >= 0) {
+				Estimate selectedEstimate = estimateTableModel.data.get(rowIndex);
+				
+				partTableModel.updateContent(selectedEstimate);
+				
+				if(statusDao.getEstimateStatus().getId() == repair.getStatus().getId()) {
+					mainFrame.invalidateButton.setEnabled(!selectedEstimate.isInvalidated());				
+				}
+			} else {
+				partTableModel.clearPartContent();
+				mainFrame.invalidateButton.setEnabled(false);				
 			}
 		}
 

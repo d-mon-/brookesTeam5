@@ -7,6 +7,7 @@ import com.brookes.garage.entity.Model;
 
 public interface ModelDao {
 	public List<Model> getAllModels();
+	public List<Model> getModelsByBrand(Brand brand);
 	public void addModel(Model model);
 	public void removeModel(Model model);
 	public void updateModel(Model model);

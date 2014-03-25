@@ -39,6 +39,15 @@ public class JpaStatusDao implements StatusDao {
 	}
 	
 	@Override
+	public Status getInvoiceStatus() {
+		EntityManager em = emf.createEntityManager();
+		Query query = em.createQuery("SELECT s FROM Status AS s WHERE s.reference = \"S3\"");
+		Status status = (Status) query.getSingleResult();
+		
+		return status;
+	}
+	
+	@Override
 	@SuppressWarnings("unchecked")
 	public void initialiseStatus() {
 		EntityManager em = emf.createEntityManager();

@@ -177,6 +177,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 			// We get the index of the selected row and retrieve the corresponding
 			// brand entity
 			int rowIndex = carListFrame.brandTable.getSelectedRow();
+	        rowIndex = carListFrame.brandTable.getRowSorter().convertRowIndexToModel(rowIndex);
 			Brand brand = brandTableModel.data.get(rowIndex);
 			brandForm.setBrand(brand);
 
@@ -232,6 +233,8 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 			// We get the currently selected row index, get the brand
 			// and remove it from the table model and the database
 			int rowIndex = carListFrame.brandTable.getSelectedRow();
+	        rowIndex = carListFrame.brandTable.getRowSorter().convertRowIndexToModel(rowIndex);
+
 			Brand brand = brandTableModel.data.get(rowIndex);
 			brandTableModel.removeBrand(rowIndex);
 			brandDao.removeBrand(brand);
@@ -259,6 +262,8 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 			// We get the index of the selected row and retrieve the corresponding
 			// model entity
 			int rowIndex = carListFrame.modelTable.getSelectedRow();
+	        rowIndex = carListFrame.modelTable.getRowSorter().convertRowIndexToModel(rowIndex);
+
 			Model model = carModelTableModel.data.get(rowIndex);
 			modelForm.setModel(model);
 			
@@ -291,7 +296,6 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				} else {
 					// The form was a creation form
 					// We create a new model with the values and save it
-					System.out.println(selectedBrand.getModels().size());
 					Model model= new Model();
 					model.setName(name);
 					model.setBrand(selectedBrand);
@@ -299,7 +303,6 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 					// We add it to the database and our table model
 					modelDao.addModel(model);
 					carModelTableModel.addModel(model);
-					System.out.println(selectedBrand.getModels().size());
 				}
 
 				// We close the windows
@@ -317,6 +320,8 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 			// We get the currently selected row index, get the model
 			// and remove it from the table model and the database
 			int rowIndex = carListFrame.modelTable.getSelectedRow();
+	        rowIndex = carListFrame.modelTable.getRowSorter().convertRowIndexToModel(rowIndex);
+
 			Model model = carModelTableModel.data.get(rowIndex);
 			carModelTableModel.removeModel(rowIndex);
 			modelDao.removeModel(model);
@@ -345,6 +350,8 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 			// We get the index of the selected row and retrieve the corresponding
 			// part entity
 			int rowIndex = carListFrame.partTable.getSelectedRow();
+	        rowIndex = carListFrame.partTable.getRowSorter().convertRowIndexToModel(rowIndex);
+
 			Part part = partTableModel.data.get(rowIndex);
 			partForm.setPart(part);
 			
@@ -421,6 +428,8 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 			// We get the currently selected row index, get the part
 			// and remove it from the table model and the database
 			int rowIndex = carListFrame.partTable.getSelectedRow();
+	        rowIndex = carListFrame.partTable.getRowSorter().convertRowIndexToModel(rowIndex);
+
 			Part part = partTableModel.data.get(rowIndex);
 			partTableModel.removePart(rowIndex);
 			partDao.removePart(part);
@@ -436,6 +445,8 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				// Since a row is now selected, we enable the edit and delete
 				// buttons for Brand
 				int rowIndex = carListFrame.brandTable.getSelectedRow();
+		        rowIndex = carListFrame.brandTable.getRowSorter().convertRowIndexToModel(rowIndex);
+
 				if(rowIndex >= 0) {
 					selectedBrand = brandTableModel.data.get(rowIndex);
 					carModelTableModel.updateModelContent(selectedBrand);
@@ -458,6 +469,9 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				// Since a row is now selected, we enable the edit and delete
 				// buttons for Model
 				int rowIndex = carListFrame.modelTable.getSelectedRow();
+				if (rowIndex == -1) return;
+		        rowIndex = carListFrame.modelTable.getRowSorter().convertRowIndexToModel(rowIndex);
+
 				if(rowIndex >= 0) {
 					selectedModel = carModelTableModel.data.get(rowIndex);
 					partTableModel.updateContent(selectedModel);

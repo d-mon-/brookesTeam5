@@ -9,7 +9,6 @@ import javax.persistence.Query;
 
 import com.brookes.garage.dao.EstimateDao;
 import com.brookes.garage.entity.Estimate;
-import com.brookes.garage.entity.Part;
 
 public class JpaEstimateDao implements EstimateDao {
 
@@ -36,13 +35,13 @@ public class JpaEstimateDao implements EstimateDao {
 		EntityTransaction t = em.getTransaction();
 		t.begin();
 		em.persist(estimate);
-		
+		/*
 		List<Part> parts = estimate.getParts();
 		for (Part part : parts) {
 			part.getEstimates().add(estimate);
 			em.merge(part);
 		}
-		
+		*/
 		t.commit();
 		em.close();
 	}

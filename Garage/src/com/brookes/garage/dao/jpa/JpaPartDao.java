@@ -8,9 +8,11 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import com.brookes.garage.dao.PartDao;
+import com.brookes.garage.entity.Estimate;
 import com.brookes.garage.entity.Model;
 import com.brookes.garage.entity.Part;
 
+@SuppressWarnings("unchecked")
 public class JpaPartDao implements PartDao {
 
 	private EntityManagerFactory emf;
@@ -20,16 +22,33 @@ public class JpaPartDao implements PartDao {
 		this.emf=emf;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Part> getAllParts() {
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT b FROM Part AS b");
+		Query query = em.createQuery("SELECT p FROM Part AS p");
 		List<Part> parts = query.getResultList();
 		em.close();
 		return parts;
 	}
 
+	@Override
+	public List<Part> getPartsByModel(Model model) {
+		EntityManager em = emf.createEntityManager();
+		Query query = em.createQuery("SELECT p FROM Part AS p WHERE p.model.id = " + model.getId());
+		List<Part> parts = query.getResultList();
+		em.close();
+		return parts;
+	}
+	
+	@Override
+	public List<Part> getPartsByEstimate(Estimate estimate) {
+		EntityManager em = emf.createEntityManager();
+		Query query = em.createQuery("SELECT p FROM Part AS p WHERE p.estimate.id = " + estimate.getId());
+		List<Part> parts = query.getResultList();
+		em.close();
+		return parts;
+	}
+	
 	@Override
 	public void addPart(Part part) {
 		EntityManager em = emf.createEntityManager();
@@ -63,7 +82,6 @@ public class JpaPartDao implements PartDao {
 	
 	@Override
 	public void invalidateEntry(Part part){
-		Part myPart = null;
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();

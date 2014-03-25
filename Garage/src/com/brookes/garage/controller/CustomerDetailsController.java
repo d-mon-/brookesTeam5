@@ -65,7 +65,7 @@ public class CustomerDetailsController implements ActionListener {
 			this.showCarCreationForm();
 		} else if (e.getSource() == carForm.brandComboBox) {
 			Brand brand = (Brand) carForm.brandComboBox.getSelectedItem();
-			List<Model> models = brand.getModels();
+			List<Model> models = DaoFactory.getModelDao().getModelsByBrand(brand);
 			Model[] array = models.toArray(new Model[models.size()]);
 			DefaultComboBoxModel<Model> model = new DefaultComboBoxModel<Model>(array);
 			carForm.modelComboBox.setModel(model);
@@ -112,13 +112,11 @@ public class CustomerDetailsController implements ActionListener {
 
 		Brand brand = (Brand) carForm.brandComboBox.getSelectedItem();
 		if(brand != null){
-			List<Model> models = brand.getModels();
-			System.out.println(brand.getModels().size());
+			List<Model> models = DaoFactory.getModelDao().getModelsByBrand(brand);
 			Model[] modelsArray = models.toArray(new Model[models.size()]);
 			DefaultComboBoxModel<Model> secondModel = new DefaultComboBoxModel<Model>(modelsArray);
 			carForm.modelComboBox.setModel(secondModel);
 			carForm.modelComboBox.setEnabled(true);
-			System.out.println(models.size());
 		}
 		
 		carForm.setVisible(true);
