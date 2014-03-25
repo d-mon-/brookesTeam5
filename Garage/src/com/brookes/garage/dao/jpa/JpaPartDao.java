@@ -60,17 +60,6 @@ public class JpaPartDao implements PartDao {
 	}
 
 	@Override
-	public void removePart(Part part) {
-		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		Part b = em.getReference(Part.class, part.getId());
-		em.remove(b);
-		t.commit();
-		em.close();
-	}
-
-	@Override
 	public void updatePart(Part part) {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
@@ -81,7 +70,7 @@ public class JpaPartDao implements PartDao {
 	}
 	
 	@Override
-	public void invalidateEntry(Part part){
+	public void removePart(Part part){
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();

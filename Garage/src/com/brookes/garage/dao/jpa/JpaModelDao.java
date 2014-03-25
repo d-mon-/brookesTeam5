@@ -61,16 +61,7 @@ public class JpaModelDao implements ModelDao {
 		em.close();
 	}
 
-	@Override
-	public void removeModel(Model model) {
-		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		Model b = em.getReference(Model.class, model.getId());
-		em.remove(b);
-		t.commit();
-		em.close();
-	}
+	
 
 	@Override
 	public void updateModel(Model model) {
@@ -83,7 +74,7 @@ public class JpaModelDao implements ModelDao {
 	}
 	
 	@Override
-	public void invalidateEntry(Model model){
+	public void removeModel(Model model){
 		Part myPart = null;
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();

@@ -27,8 +27,12 @@ public class JpaBrandDao implements BrandDao {
 		EntityManager em = emf.createEntityManager();
 		Query query = em.createQuery("SELECT b FROM Brand AS b  WHERE b.delete_flag=0");
 		List<Brand> brands = query.getResultList();	
+		System.out.println(brands.size());
 		brands = reduce(brands);
+		System.out.println(brands.size());
 		em.close();
+		
+		
 		return brands;
 	}
 	//remove models and parts deleted (delete_flag==true)
@@ -41,11 +45,13 @@ public class JpaBrandDao implements BrandDao {
 				for(int j = 0, ll = br.getModels().size();j<ll;j++){
 					mod = br.getModels().get(j);
 					if(mod.isDelete_flag()){
-						br.getModels().remove(j);
+						br.getModels().remove(j);j--;ll--;
+						
 					}else{
 						for(int k = 0, lll = mod.getParts().size();k<lll;k++){
 							if(mod.getParts().get(k).isDelete_flag()){
-								mod.getParts().remove(k);
+								mod.getParts().remove(k);k--;lll--;
+								
 							}
 						}
 					}
@@ -66,17 +72,6 @@ public class JpaBrandDao implements BrandDao {
 	}
 
 	@Override
-	public void removeBrand(Brand brand) {
-		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		Brand b = em.getReference(Brand.class, brand.getId());
-		em.remove(b);
-		t.commit();
-		em.close();
-	}
-
-	@Override
 	public void updateBrand(Brand brand) {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
@@ -87,7 +82,7 @@ public class JpaBrandDao implements BrandDao {
 	}
 	
 	@Override
-	public void invalidateEntry(Brand brand){
+	public void removeBrand(Brand brand){
 		Model myModel = null;
 		Part myPart = null;
 		EntityManager em = emf.createEntityManager();
