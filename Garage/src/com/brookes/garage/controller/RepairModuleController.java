@@ -97,7 +97,7 @@ public class RepairModuleController implements ActionListener, ListSelectionList
 			this.saveRepair();
 		} else if (repairForm != null && e.getSource() == repairForm.customerComboBox) {
 			Customer customer = (Customer) repairForm.customerComboBox.getSelectedItem();
-			List<Customers_car> cars = customer.getCars();
+			List<Customers_car> cars = DaoFactory.getCarDao().getCarsByCustomer(customer);
 			Customers_car[] array = cars.toArray(new Customers_car[cars.size()]);
 			DefaultComboBoxModel<Customers_car> model = new DefaultComboBoxModel<Customers_car>(array);
 			repairForm.carComboBox.setModel( model );

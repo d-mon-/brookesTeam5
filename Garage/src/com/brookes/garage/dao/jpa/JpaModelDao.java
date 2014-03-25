@@ -2,6 +2,7 @@ package com.brookes.garage.dao.jpa;
 
 import java.util.List;
 
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -12,6 +13,7 @@ import com.brookes.garage.entity.Brand;
 import com.brookes.garage.entity.Model;
 import com.brookes.garage.entity.Part;
 
+@SuppressWarnings("unchecked")
 public class JpaModelDao implements ModelDao {
 
 	private EntityManagerFactory emf;
@@ -21,7 +23,6 @@ public class JpaModelDao implements ModelDao {
 		this.emf=emf;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Model> getAllModels() {
 		EntityManager em = emf.createEntityManager();
@@ -31,6 +32,15 @@ public class JpaModelDao implements ModelDao {
 		return models;
 	}
 
+	@Override
+	public List<Model> getModelsByBrand(Brand brand) {
+		EntityManager em = emf.createEntityManager();
+		Query query = em.createQuery("SELECT m FROM Model AS m WHERE m.brand.id = " + brand.getId());
+		List<Model> models = query.getResultList();
+		em.close();
+		return models;
+	}
+	
 	@Override
 	public void addModel(Model model) {
 		EntityManager em = emf.createEntityManager();

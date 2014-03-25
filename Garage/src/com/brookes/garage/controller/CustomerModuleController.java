@@ -159,6 +159,8 @@ public class CustomerModuleController implements ActionListener,
 		// We get the index of the selected row and retrieve the corresponding
 		// Customer entity
 		int rowIndex = customerListFrame.table.getSelectedRow();
+        rowIndex = customerListFrame.table.getRowSorter().convertRowIndexToModel(rowIndex);
+
 		Customer customer = tableModel.data.get(rowIndex);
 		customerForm.setCustomer(customer);
 
@@ -227,6 +229,7 @@ public class CustomerModuleController implements ActionListener,
 		// We get the currently selected row index, get the customer
 		// and remove it from the table model and the database
 		int rowIndex = customerListFrame.table.getSelectedRow();
+        rowIndex = customerListFrame.table.getRowSorter().convertRowIndexToModel(rowIndex);
 		Customer customer = tableModel.data.get(rowIndex);
 		tableModel.removeCustomer(rowIndex);
 		customerDao.removeCustomer(customer);
@@ -251,6 +254,8 @@ public class CustomerModuleController implements ActionListener,
 	 */
 	public void showCustomerDetails() {
 		int rowIndex = customerListFrame.table.getSelectedRow();
+        rowIndex = customerListFrame.table.getRowSorter().convertRowIndexToModel(rowIndex);
+
 		Customer customer = tableModel.data.get(rowIndex);
 		
 		customerDetailsController.setCustomer(customer);
