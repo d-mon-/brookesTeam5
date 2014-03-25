@@ -25,9 +25,33 @@ public class JpaBrandDao implements BrandDao {
 	@Override
 	public List<Brand> getAllBrands() {
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT b FROM Brand AS b");
-		List<Brand> brands = query.getResultList();
+		Query query = em.createQuery("SELECT b FROM Brand AS b  WHERE b.delete_flag=0");
+		List<Brand> brands = query.getResultList();	
+		brands = reduce(brands);
 		em.close();
+		return brands;
+	}
+	//remove models and parts deleted (delete_flag==true)
+	private List<Brand> reduce(List<Brand> brands){
+		if(brands.size()>0){
+			Brand br = null;
+			Model mod = null;
+			for(int i = 0, l = brands.size();i<l;i++){
+				br = brands.get(i);			
+				for(int j = 0, ll = br.getModels().size();j<ll;j++){
+					mod = br.getModels().get(j);
+					if(mod.isDelete_flag()){
+						br.getModels().remove(j);
+					}else{
+						for(int k = 0, lll = mod.getParts().size();k<lll;k++){
+							if(mod.getParts().get(k).isDelete_flag()){
+								mod.getParts().remove(k);
+							}
+						}
+					}
+				}
+			}
+		}
 		return brands;
 	}
 

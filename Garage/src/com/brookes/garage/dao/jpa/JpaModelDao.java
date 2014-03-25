@@ -3,6 +3,8 @@ package com.brookes.garage.dao.jpa;
 import java.util.List;
 
 
+
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -26,7 +28,7 @@ public class JpaModelDao implements ModelDao {
 	@Override
 	public List<Model> getAllModels() {
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT m FROM Model AS m");
+		Query query = em.createQuery("SELECT m FROM Model AS m  WHERE b.delete_flag=0");
 		List<Model> models = query.getResultList();
 		em.close();
 		return models;
@@ -35,7 +37,8 @@ public class JpaModelDao implements ModelDao {
 	@Override
 	public List<Model> getModelsByBrand(Brand brand) {
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT m FROM Model AS m WHERE m.brand.id = " + brand.getId());
+		
+		Query query = em.createQuery("SELECT m FROM Model AS m WHERE m.delete_flag=0 AND m.brand.id = " + brand.getId());
 		List<Model> models = query.getResultList();
 		em.close();
 		return models;

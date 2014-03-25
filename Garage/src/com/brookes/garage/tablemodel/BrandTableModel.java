@@ -8,6 +8,7 @@ import javax.swing.table.AbstractTableModel;
 import com.brookes.garage.dao.BrandDao;
 import com.brookes.garage.dao.DaoFactory;
 import com.brookes.garage.entity.Brand;
+import com.brookes.garage.entity.Model;
 
 public class BrandTableModel extends AbstractTableModel {
 
@@ -25,9 +26,17 @@ public class BrandTableModel extends AbstractTableModel {
 	 */
 	public BrandTableModel() {
 		super();
-
+		data = null;
 		brandDao = DaoFactory.getBrandDao();
 		data = brandDao.getAllBrands();
+		/*for(int i = 0, l = data.size();i<l;i++){
+			Brand br = data.get(i);
+			System.out.println("__"+br.getName()+" deleted: "+br.isDelete_flag() );
+			for(int j = 0, ll = br.getModels().size();j<ll;j++){
+				Model mod = br.getModels().get(j);
+				System.out.println("_______"+mod.getName()+" deleted: "+mod.isDelete_flag());
+			}
+		}*/
 	}
 
 	/**
