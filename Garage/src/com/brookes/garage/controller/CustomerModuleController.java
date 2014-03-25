@@ -128,7 +128,7 @@ public class CustomerModuleController implements ActionListener,
 			this.deleteCustomer();
 		} else if (e.getSource() == customerListFrame.viewButton) {
 			this.showCustomerDetails();
-		} else if (customerForm != null && e.getSource() == customerForm.saveButton) {
+		} else if (customerForm != null && e.getSource() == customerForm.okButton) {
 			this.saveCustomer();
 		} else if (customerDetailsController != null && e.getSource() == customerDetailsController.mainFrame.backButton) {
 			this.goBackToCustomerList();
@@ -143,7 +143,7 @@ public class CustomerModuleController implements ActionListener,
 	 */
 	public void showCustomerCreationForm() {
 		customerForm = new CustomerFormFrame();
-		customerForm.saveButton.addActionListener(this);
+		customerForm.okButton.addActionListener(this);
 
 		customerForm.setVisible(true);
 	}
@@ -154,7 +154,7 @@ public class CustomerModuleController implements ActionListener,
 	 */
 	public void showCustomerEditionForm() {
 		customerForm = new CustomerFormFrame();
-		customerForm.saveButton.addActionListener(this);
+		customerForm.okButton.addActionListener(this);
 
 		// We get the index of the selected row and retrieve the corresponding
 		// Customer entity

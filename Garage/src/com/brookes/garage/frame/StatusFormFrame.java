@@ -44,7 +44,7 @@ public class StatusFormFrame extends JDialog {
 	 * Create the dialog.
 	 */
 	public StatusFormFrame() {
-		setBounds(100, 100, 308, 160);
+		setBounds(100, 100, 309, 120);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -60,11 +60,11 @@ public class StatusFormFrame extends JDialog {
 				FormFactory.DEFAULT_ROWSPEC,}));
 		{
 			JLabel lblNewStatus = new JLabel("New status");
-			contentPanel.add(lblNewStatus, "2, 4, right, default");
+			contentPanel.add(lblNewStatus, "2, 2, right, default");
 		}
 		{
 			statusComboBox = new JComboBox<Status>();
-			contentPanel.add(statusComboBox, "4, 4, fill, default");
+			contentPanel.add(statusComboBox, "4, 2, fill, default");
 		}
 		{
 			JPanel buttonPane = new JPanel();

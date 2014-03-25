@@ -134,7 +134,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				this.showBrandEditionForm();
 			} else if (e.getSource() == carListFrame.brandDeleteButton) {
 				this.deleteBrand();
-			} else if (brandForm != null && e.getSource() == brandForm.saveButton) {
+			} else if (brandForm != null && e.getSource() == brandForm.okButton) {
 				this.saveBrand();
 			} else if (e.getSource() == carListFrame.modelCreateButton) {
 				this.showModelCreationForm();
@@ -142,7 +142,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				this.showModelEditionForm();
 			} else if (e.getSource() == carListFrame.modelDeleteButton) {
 				this.deleteModel();
-			} else if (modelForm != null && e.getSource() == modelForm.saveButton) {
+			} else if (modelForm != null && e.getSource() == modelForm.okButton) {
 				this.saveModel();
 			} else if (e.getSource() == carListFrame.partCreateButton) {
 				this.showPartCreationForm();
@@ -150,7 +150,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				this.showPartEditionForm();
 			} else if (e.getSource() == carListFrame.partDeleteButton) {
 				this.deletePart();
-			} else if (partForm != null && e.getSource() == partForm.saveButton) {
+			} else if (partForm != null && e.getSource() == partForm.okButton) {
 				this.savePart();
 			}	
 		}
@@ -161,7 +161,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 		 */
 		public void showBrandCreationForm() {
 			brandForm = new BrandFormFrame();
-			brandForm.saveButton.addActionListener(this);
+			brandForm.okButton.addActionListener(this);
 
 			brandForm.setVisible(true);
 		}
@@ -172,7 +172,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 		 */
 		public void showBrandEditionForm() {
 			brandForm = new BrandFormFrame();
-			brandForm.saveButton.addActionListener(this);
+			brandForm.okButton.addActionListener(this);
 
 			// We get the index of the selected row and retrieve the corresponding
 			// brand entity
@@ -243,7 +243,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 		 */
 		public void showModelCreationForm() {
 			modelForm = new ModelFormFrame();
-			modelForm.saveButton.addActionListener(this);
+			modelForm.okButton.addActionListener(this);
 
 			modelForm.setVisible(true);
 		}		
@@ -254,7 +254,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 		 */
 		public void showModelEditionForm() {
 			modelForm = new ModelFormFrame();
-			modelForm.saveButton.addActionListener(this);
+			modelForm.okButton.addActionListener(this);
 
 			// We get the index of the selected row and retrieve the corresponding
 			// model entity
@@ -329,7 +329,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 		 */
 		public void showPartCreationForm() {
 			partForm = new PartFormFrame();
-			partForm.saveButton.addActionListener(this);
+			partForm.okButton.addActionListener(this);
 
 			partForm.setVisible(true);
 		}		
@@ -340,7 +340,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 		 */
 		public void showPartEditionForm() {
 			partForm = new PartFormFrame();
-			partForm.saveButton.addActionListener(this);
+			partForm.okButton.addActionListener(this);
 
 			// We get the index of the selected row and retrieve the corresponding
 			// part entity

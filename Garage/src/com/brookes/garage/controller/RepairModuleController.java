@@ -93,7 +93,7 @@ public class RepairModuleController implements ActionListener, ListSelectionList
 			this.showRepairDetails();
 		} else if (e.getSource() == repairDetailsController.mainFrame.backButton) {
 			this.goBackToRepairList();
-		} else if (repairForm != null && e.getSource() == repairForm.saveButton) {
+		} else if (repairForm != null && e.getSource() == repairForm.okButton) {
 			this.saveRepair();
 		} else if (repairForm != null && e.getSource() == repairForm.customerComboBox) {
 			Customer customer = (Customer) repairForm.customerComboBox.getSelectedItem();
@@ -112,7 +112,7 @@ public class RepairModuleController implements ActionListener, ListSelectionList
 	private void showRepairCreationForm() {
 		repairForm = new RepairFormFrame();
 		repairForm.customerComboBox.addActionListener(this);
-		repairForm.saveButton.addActionListener(this);
+		repairForm.okButton.addActionListener(this);
 
 		repairForm.setVisible(true);
 	}

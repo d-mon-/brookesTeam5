@@ -70,7 +70,7 @@ public class CustomerDetailsController implements ActionListener {
 			DefaultComboBoxModel<Model> model = new DefaultComboBoxModel<Model>(array);
 			carForm.modelComboBox.setModel(model);
 			carForm.modelComboBox.setEnabled(true);
-		} else if (e.getSource() == carForm.saveButton) {
+		} else if (e.getSource() == carForm.okButton) {
 			this.saveCustomerCar();
 		}
 	}
@@ -102,7 +102,7 @@ public class CustomerDetailsController implements ActionListener {
 	 */
 	public void showCarCreationForm() {
 		carForm = new CarFormFrame();
-		carForm.saveButton.addActionListener(this);
+		carForm.okButton.addActionListener(this);
 
 		List<Brand> brands = DaoFactory.getBrandDao().getAllBrands();
 		Brand[] brandsArray = brands.toArray(new Brand[brands.size()]);
