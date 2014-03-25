@@ -25,7 +25,7 @@ public class JpaPartDao implements PartDao {
 	@Override
 	public List<Part> getAllParts() {
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT p FROM Part AS p");
+		Query query = em.createQuery("SELECT p FROM Part AS p WHERE p.delete_flag=0");
 		List<Part> parts = query.getResultList();
 		em.close();
 		return parts;
@@ -34,7 +34,7 @@ public class JpaPartDao implements PartDao {
 	@Override
 	public List<Part> getPartsByModel(Model model) {
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT p FROM Part AS p WHERE p.model.id = " + model.getId());
+		Query query = em.createQuery("SELECT p FROM Part AS p WHERE p.delete_flag=0 AND p.model.id = " + model.getId());
 		List<Part> parts = query.getResultList();
 		em.close();
 		return parts;
@@ -43,7 +43,7 @@ public class JpaPartDao implements PartDao {
 	@Override
 	public List<Part> getPartsByEstimate(Estimate estimate) {
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT p FROM Part AS p WHERE p.estimate.id = " + estimate.getId());
+		Query query = em.createQuery("SELECT p FROM Part AS p WHERE p.delete_flag=0 AND p.estimate.id = " + estimate.getId());
 		List<Part> parts = query.getResultList();
 		em.close();
 		return parts;
@@ -60,17 +60,6 @@ public class JpaPartDao implements PartDao {
 	}
 
 	@Override
-	public void removePart(Part part) {
-		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		Part b = em.getReference(Part.class, part.getId());
-		em.remove(b);
-		t.commit();
-		em.close();
-	}
-
-	@Override
 	public void updatePart(Part part) {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
@@ -81,7 +70,7 @@ public class JpaPartDao implements PartDao {
 	}
 	
 	@Override
-	public void invalidateEntry(Part part){
+	public void removePart(Part part){
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();

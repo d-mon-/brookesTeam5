@@ -13,6 +13,5 @@ public interface PartDao {
 	public void addPart(Part part);
 	public void removePart(Part part);
 	public void updatePart(Part part);
-	public void invalidateEntry(Part part);
 }
 

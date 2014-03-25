@@ -20,7 +20,7 @@ public class Model {
 	
 	private Brand brand;
 	
-	private boolean delete_flag = false;
+	private boolean delete_flag = true;
 
 	@OneToMany(mappedBy = "model")
 	private final List<Part> parts = new ArrayList<Part>();

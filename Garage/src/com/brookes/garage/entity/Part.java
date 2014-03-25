@@ -23,7 +23,7 @@ public class Part {
 	
 	private Model model;
 	
-	private boolean delete_flag = false;
+	private boolean delete_flag = true;
 	
 	private List<Estimate> estimates = new ArrayList<Estimate>();
 
