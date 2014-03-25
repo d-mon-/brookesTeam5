@@ -296,7 +296,6 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				} else {
 					// The form was a creation form
 					// We create a new model with the values and save it
-					System.out.println(selectedBrand.getModels().size());
 					Model model= new Model();
 					model.setName(name);
 					model.setBrand(selectedBrand);
@@ -304,7 +303,6 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 					// We add it to the database and our table model
 					modelDao.addModel(model);
 					carModelTableModel.addModel(model);
-					System.out.println(selectedBrand.getModels().size());
 				}
 
 				// We close the windows
@@ -471,6 +469,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				// Since a row is now selected, we enable the edit and delete
 				// buttons for Model
 				int rowIndex = carListFrame.modelTable.getSelectedRow();
+				if (rowIndex == -1) return;
 		        rowIndex = carListFrame.modelTable.getRowSorter().convertRowIndexToModel(rowIndex);
 
 				if(rowIndex >= 0) {

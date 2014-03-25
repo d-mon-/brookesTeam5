@@ -122,6 +122,8 @@ public class RepairModuleController implements ActionListener, ListSelectionList
 	 */
 	public void showRepairDetails() {
 		int rowIndex = repairListFrame.table.getSelectedRow();
+        rowIndex = repairListFrame.table.getRowSorter().convertRowIndexToModel(rowIndex);
+
 		Repair repair = tableModel.data.get(rowIndex);
 		
 		repairDetailsController.setRepair(repair);

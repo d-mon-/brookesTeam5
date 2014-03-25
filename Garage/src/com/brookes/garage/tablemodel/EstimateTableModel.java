@@ -67,11 +67,18 @@ public class EstimateTableModel extends AbstractTableModel {
 			Date date = data.get(rowIndex).getCreation_date();
 			return dateFormat.format(date);
 		}
-		case 2:
-			return data.get(rowIndex).isInvalidated()?"Invalidated":"Pending";
+		case 2: {
+			if (data.get(rowIndex).isInvalidated()) {
+				return "Invalidated";
+			} else {
+				if (data.get(rowIndex).getInvoice() != null) {
+					return "Validated";
+				} else {
+					return "Pending";
+				}
+			}
+		}
 		case 3: {
-			System.out.println(data.get(rowIndex).getParts().size());
-
 			double totalPrice = 0;
 			for (Part part : data.get(rowIndex).getParts())
 				totalPrice += part.getPrice();

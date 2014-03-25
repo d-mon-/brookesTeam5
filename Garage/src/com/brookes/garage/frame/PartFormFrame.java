@@ -57,7 +57,7 @@ public class PartFormFrame extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblRef = new JLabel("Reference");
-		lblRef.setBounds(13, 16, 60, 16);
+		lblRef.setBounds(13, 16, 66, 16);
 		contentPane.add(lblRef);
 		
 		JLabel lblName = new JLabel("Name");
@@ -69,17 +69,17 @@ public class PartFormFrame extends JFrame {
 		contentPane.add(lblPrice);
 		
 		refField = new JTextField();
-		refField.setBounds(72, 10, 262, 28);
+		refField.setBounds(79, 10, 255, 28);
 		contentPane.add(refField);
 		refField.setColumns(10);
 		
 		nameField = new JTextField();
-		nameField.setBounds(72, 50, 262, 28);
+		nameField.setBounds(79, 50, 255, 28);
 		contentPane.add(nameField);
 		nameField.setColumns(10);
 		
 		priceField = new JTextField();
-		priceField.setBounds(72, 90, 262, 28);
+		priceField.setBounds(79, 90, 255, 28);
 		contentPane.add(priceField);
 		priceField.setColumns(10);
 		
