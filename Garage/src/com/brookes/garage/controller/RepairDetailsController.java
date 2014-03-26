@@ -15,18 +15,21 @@ import javax.swing.event.ListSelectionListener;
 import com.brookes.garage.dao.DaoFactory;
 import com.brookes.garage.dao.EstimateDao;
 import com.brookes.garage.dao.RepairDao;
+import com.brookes.garage.dao.RequestedPartDao;
 import com.brookes.garage.dao.StatusDao;
 import com.brookes.garage.entity.Customer;
 import com.brookes.garage.entity.Estimate;
 import com.brookes.garage.entity.Invoice;
 import com.brookes.garage.entity.Part;
 import com.brookes.garage.entity.Repair;
+import com.brookes.garage.entity.RequestedPart;
 import com.brookes.garage.entity.Status;
 import com.brookes.garage.frame.EstimateFormDialog;
 import com.brookes.garage.frame.RepairDetailsFrame;
 import com.brookes.garage.frame.StatusFormFrame;
 import com.brookes.garage.tablemodel.EstimateTableModel;
 import com.brookes.garage.tablemodel.PartTableModel;
+import com.brookes.garage.tablemodel.RequestedPartTableModel;
 
 public class RepairDetailsController implements ActionListener, ListSelectionListener {
 
@@ -38,12 +41,13 @@ public class RepairDetailsController implements ActionListener, ListSelectionLis
 
 	private PartTableModel formTableModel = new PartTableModel();
 	private EstimateTableModel estimateTableModel = new EstimateTableModel();
-	private PartTableModel partTableModel = new PartTableModel();
+	private RequestedPartTableModel partTableModel = new RequestedPartTableModel();
 	
 	private RepairDao repairDao = DaoFactory.getRepairDao();
 	private StatusDao statusDao = DaoFactory.getStatusDao();
 	private EstimateDao estimateDao = DaoFactory.getEstimateDao();
-
+	private RequestedPartDao requestedPartDao = DaoFactory.getRequestedPartDao();
+	
 	private Boolean invalidating = false;
 
 	public RepairDetailsController() {
@@ -193,15 +197,25 @@ public class RepairDetailsController implements ActionListener, ListSelectionLis
 		// We create a new estimate and save it
 		Estimate estimate = new Estimate();
 		estimate.setRepair(repair);
-		estimate.setInvalidated(false);
-		List<Part> parts = formTableModel.data;
-		estimate.setParts(parts);
+		estimate.setInvalidated(false);		
 		estimate.setCreation_date(new Date());
 		estimate.setIdentifier("E"+estimate.hashCode());
 		
 		// We add it to the database and to our table model
 		estimateDao.addEstimate(estimate);
 		estimateTableModel.addEstimate(estimate);
+		
+		List<Part> parts = formTableModel.data;
+		List<RequestedPart> requestedParts = new ArrayList<RequestedPart>();
+		for (Part part : parts) {
+			RequestedPart newPart = new RequestedPart();
+			newPart.setEstimate(estimate);
+			newPart.setPart(part);
+			requestedPartDao.addRequestedPart(newPart);
+			requestedParts.add(newPart);
+		}
+		
+		estimate.setParts(requestedParts);
 		
 		mainFrame.estimateTable.setRowSelectionInterval(0, 0);
 		estimateForm.dispose();

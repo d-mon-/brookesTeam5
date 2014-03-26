@@ -17,6 +17,7 @@ import javax.swing.border.EmptyBorder;
 import com.brookes.garage.dao.DaoFactory;
 import com.brookes.garage.entity.Customer;
 import com.brookes.garage.entity.Customers_car;
+import com.brookes.garage.entity.Repair;
 
 public class RepairFormFrame extends JFrame {
 
@@ -32,6 +33,7 @@ public class RepairFormFrame extends JFrame {
 	public JButton cancelButton;
 	public JButton saveButton;
 	
+	private Repair repair;
 
 	/**
 	 * Create the frame.
@@ -103,4 +105,11 @@ public class RepairFormFrame extends JFrame {
 		contentPane.add(carComboBox);
 	}
 	
+	public Repair getRepair() {
+		return repair;
+	}
+
+	public void setRepair(Repair repair) {
+		this.repair = repair;
+	}
 }

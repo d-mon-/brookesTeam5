@@ -29,11 +29,11 @@ public class Customer {
 	private final List<Customers_car> cars = new ArrayList<Customers_car>();
 	
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
@@ -78,4 +78,18 @@ public class Customer {
 		return firstname + " " + lastname;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null || !(obj instanceof Customer)) {
+			return false;
+		}
+	  
+		Customer cus = (Customer) obj;
+	  
+		if (this.getId().equals(cus.getId())) {
+			return true;
+		}
+	  
+		return false;
+	}
 }

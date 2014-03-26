@@ -73,6 +73,7 @@ public class RepairModuleController implements ActionListener, ListSelectionList
 			// Add itself as action listener to create, edit and delete a customer
 			repairListFrame.createButton.addActionListener(this);
 			repairListFrame.viewButton.addActionListener(this);
+			repairListFrame.editButton.addActionListener(this);
 		}
 	}
 
@@ -89,6 +90,8 @@ public class RepairModuleController implements ActionListener, ListSelectionList
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == repairListFrame.createButton) {
 			this.showRepairCreationForm();
+		} else if (e.getSource() == repairListFrame.editButton) {
+			this.showRepairEditionForm();
 		} else if (e.getSource() == repairListFrame.viewButton) {
 			this.showRepairDetails();
 		} else if (e.getSource() == repairDetailsController.mainFrame.backButton) {
@@ -114,6 +117,33 @@ public class RepairModuleController implements ActionListener, ListSelectionList
 		repairForm.customerComboBox.addActionListener(this);
 		repairForm.saveButton.addActionListener(this);
 
+		repairForm.setVisible(true);
+	}
+	
+	/**
+	 * Displays the customer edition form in a new window It consists of the
+	 * same frame as for creation but already filled-in
+	 */
+	public void showRepairEditionForm() {
+		repairForm = new RepairFormFrame();
+		repairForm.customerComboBox.addActionListener(this);
+		repairForm.saveButton.addActionListener(this);
+
+		// We get the index of the selected row and retrieve the corresponding
+		// Repair entity
+		int rowIndex = repairListFrame.table.getSelectedRow();
+        rowIndex = repairListFrame.table.getRowSorter().convertRowIndexToModel(rowIndex);
+
+		Repair repair = tableModel.data.get(rowIndex);
+		repairForm.setRepair(repair);
+		
+		// We fill-in the form
+		repairForm.customerComboBox.setSelectedItem(repair.getCar().getCustomer());
+		System.out.println("items" + repairForm.customerComboBox.getModel().getSize());
+		repairForm.carComboBox.setSelectedItem(repair.getCar());
+		System.out.println("items" + repairForm.carComboBox.getModel().getSize());
+		repairForm.descriptionField.setText(repair.getDescription());
+		
 		repairForm.setVisible(true);
 	}
 	
@@ -150,20 +180,34 @@ public class RepairModuleController implements ActionListener, ListSelectionList
 		if (car != null && description.length() > 0) {
 			// Every fields contains a value
 
-				// The form was a creation form
-				// We create a new repair with the values and save it
-				Repair repair = new Repair();
-				repair.setCar(car);
-				repair.setDescription(description);
-				repair.setCreation_date(new Date());
-				repair.setIdentifier("R"+repair.hashCode());
+				if (repairForm.getRepair() != null) {
+					// The form contains an existing repair
+					// This was an edition form
+					// We update the values in the existing repair and update it
+					Repair repair = repairForm.getRepair();
+					repair.setCar(car);
+					repair.setDescription(description);
 
-				StatusDao statusDao = DaoFactory.getStatusDao();
-				repair.setStatus(statusDao.getFirstStatus());
-				
-				// We add it to the database and our table model
-				repairDao.addRepair(repair);
-				tableModel.addRepair(repair);
+					// We update the database and our table model
+					repairDao.updateRepair(repair);
+					tableModel.updateRepair(repair);
+				} else {
+					// The form was a creation form
+					// We create a new repair with the values and save it
+					Repair repair = new Repair();
+					repair.setCar(car);
+					repair.setDescription(description);
+					repair.setCreation_date(new Date());
+					repair.setIdentifier("R"+repair.hashCode());
+
+					StatusDao statusDao = DaoFactory.getStatusDao();
+					repair.setStatus(statusDao.getFirstStatus());
+					
+					// We add it to the database and our table model
+					repairDao.addRepair(repair);
+					tableModel.addRepair(repair);
+				}
+
 
 			// We close the windows
 			repairForm.dispose();
@@ -178,6 +222,7 @@ public class RepairModuleController implements ActionListener, ListSelectionList
 		if (e.getSource() == repairListFrame.table.getSelectionModel()) {
 			// Since a row is now selected, we enable the view button
 			repairListFrame.viewButton.setEnabled(true);
+			repairListFrame.editButton.setEnabled(true);
 		}
 	}
 	

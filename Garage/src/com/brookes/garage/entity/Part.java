@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Part {
@@ -25,8 +26,8 @@ public class Part {
 	
 	private boolean delete_flag = false;
 	
-	private List<Estimate> estimates = new ArrayList<Estimate>();
-
+	@OneToMany(mappedBy = "part")
+	private List<RequestedPart> requests = new ArrayList<RequestedPart>();
 	
 	public Long getId() {
 		return id;
@@ -68,15 +69,18 @@ public class Part {
 		this.model = model;
 	}
 
-	public List<Estimate> getEstimates() {
-		return estimates;
-	}
-
 	@Override
 	public String toString() {
 		return reference + " - " + name + " - " + price;
 	}
 	
+	public List<RequestedPart> getRequests() {
+		return requests;
+	}
+
+	public void setRequests(List<RequestedPart> requests) {
+		this.requests = requests;
+	}
 
 	public boolean isDelete_flag() {
 		return delete_flag;

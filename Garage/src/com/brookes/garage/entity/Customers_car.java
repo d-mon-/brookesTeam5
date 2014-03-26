@@ -67,4 +67,18 @@ public class Customers_car {
 		return model.toString() + " " + number_plate;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null || !(obj instanceof Customers_car)) {
+			return false;
+		}
+	  
+		Customers_car cus = (Customers_car) obj;
+	  
+		if (this.getId().equals(cus.getId())) {
+			return true;
+		}
+	  
+		return false;
+	}
 }

@@ -9,8 +9,8 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import com.brookes.garage.entity.Estimate;
-import com.brookes.garage.entity.Part;
 import com.brookes.garage.entity.Repair;
+import com.brookes.garage.entity.RequestedPart;
 
 public class EstimateTableModel extends AbstractTableModel {
 
@@ -80,8 +80,8 @@ public class EstimateTableModel extends AbstractTableModel {
 		}
 		case 3: {
 			double totalPrice = 0;
-			for (Part part : data.get(rowIndex).getParts())
-				totalPrice += part.getPrice();
+			for (RequestedPart requestedPart : data.get(rowIndex).getParts())
+				totalPrice += requestedPart.getPart().getPrice();
 			return totalPrice;
 		}
 		default:

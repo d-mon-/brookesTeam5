@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import com.brookes.garage.entity.Estimate;
 import com.brookes.garage.entity.Model;
 import com.brookes.garage.entity.Part;
 
@@ -93,11 +92,6 @@ public class PartTableModel extends AbstractTableModel {
 
 	public void updateContent(Model model) {
 		data = model.getParts();
-		fireTableDataChanged();
-	}
-	
-	public void updateContent(Estimate estimate) {
-		data = estimate.getParts();
 		fireTableDataChanged();
 	}
 	

@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,8 +29,8 @@ public class Estimate {
 	
 	private Repair repair;
 	
-	@ManyToMany(mappedBy = "estimates")
-	private List<Part> parts = new ArrayList<Part>();
+	@OneToMany(mappedBy = "estimate")
+	private List<RequestedPart> parts = new ArrayList<RequestedPart>();
 
 	@OneToOne(mappedBy = "estimate")
 	private Invoice invoice;
@@ -84,11 +84,11 @@ public class Estimate {
 		this.invoice = invoice;
 	}
 
-	public List<Part> getParts() {
+	public List<RequestedPart> getParts() {
 		return parts;
 	}
 	
-	public void setParts(List<Part> parts) {
+	public void setParts(List<RequestedPart> parts) {
 		this.parts = parts;
 	}
 }
