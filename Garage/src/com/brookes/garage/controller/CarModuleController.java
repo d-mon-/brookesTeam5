@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -196,7 +197,11 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 
 			if (name.length() > 0) {
 				// The Name field must contain a value
-
+				if(name.length()>255){
+					JOptionPane.showMessageDialog(null, "Name length is too long: "+name.length()+"/255");
+					return;
+				}
+				
 				if (brandForm.getBrand() != null) {
 					// The form contains an existing brand
 					// This was an edition form
@@ -283,7 +288,10 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 
 			if (name.length() > 0) {
 				// The Name field must contain a value
-
+				if(name.length()>255){
+					JOptionPane.showMessageDialog(null, "Name length is too long: "+name.length()+"/255");
+					return;
+				}
 				if (modelForm.getModel() != null) {
 					// The form contains an existing model
 					// This was an edition form
@@ -382,10 +390,20 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 				try {
 				    Double.parseDouble(price);
 				} catch (NumberFormatException nfe) {
-					partForm.noEmptyLabel.setText("Price must be a number.");
+					partForm.noEmptyLabel.setText("Price must be a valid number.");
 					partForm.noEmptyLabel.setVisible(true);
 					return;
 				}
+				
+				if(name.length()>255){
+					JOptionPane.showMessageDialog(null, "Name length is too long: "+name.length()+"/255");
+					return;
+				}
+				if(ref.length()>255){
+					JOptionPane.showMessageDialog(null, "Reference length is too long: "+ref.length()+"/255");
+					return;
+				}
+				
 
 				if (partForm.getPart() != null) {
 					// The form contains an existing part

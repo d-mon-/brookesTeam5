@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
@@ -185,6 +186,23 @@ public class CustomerModuleController implements ActionListener,
 
 		if (firstname.length() > 0 && lastname.length() > 0
 				&& phone.length() > 0 && address.length() > 0) {
+			
+			if(firstname.length()>255){
+				JOptionPane.showMessageDialog(null, "Firstname length is too long: "+firstname.length()+"/255");
+				return;
+			}
+			if(lastname.length()>255){
+				JOptionPane.showMessageDialog(null, "Lastname length is too long: "+lastname.length()+"/255");
+				return;
+			}
+			if(phone.length()>255){
+				JOptionPane.showMessageDialog(null, "Phone length is too long: "+phone.length()+"/255");
+				return;
+			}
+			if(address.length()>1000){
+				JOptionPane.showMessageDialog(null, "Address length is too long: "+address.length()+"/1000");
+				return;
+			}
 			// Every fields contains a value
 
 			if (customerForm.getCustomer() != null) {

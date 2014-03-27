@@ -131,7 +131,10 @@ public class CustomerDetailsController implements ActionListener {
 
 		if (model != null && plate_number.length() > 0) {
 			// Every fields contains a value
-
+				if(plate_number.length()>255){
+					JOptionPane.showMessageDialog(null, "Plate number length is too long: "+plate_number.length()+"/255");
+					return;
+				}
 				// The form was a creation form
 				// We create a new customer with the values and save it
 				Customers_car car = new Customers_car();

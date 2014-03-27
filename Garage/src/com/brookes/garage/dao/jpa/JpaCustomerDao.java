@@ -23,41 +23,57 @@ public class JpaCustomerDao implements CustomerDao {
 	@SuppressWarnings("unchecked")
 	public List<Customer> getAllCustomers() {
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT c FROM Customer AS c");
-		List<Customer> customers = query.getResultList();
-		em.close();
-		return customers;
+		List<Customer> customers = null;
+		try {
+			Query query = em.createQuery("SELECT c FROM Customer AS c");
+			customers = query.getResultList();
+		} finally {
+			em.close();			
+		}
+		return customers;		
 	}
 	
 	@Override
 	public void addCustomer(Customer customer) {
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		em.persist(customer);
-		t.commit();
-		em.close();
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+			em.persist(customer);
+			t.commit();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}
 	}
 	
 	@Override
 	public void removeCustomer(Customer customer) {
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		Customer c = em.getReference(Customer.class, customer.getId());
-		em.remove(c);
-		t.commit();
-		em.close();
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+			Customer c = em.getReference(Customer.class, customer.getId());
+			em.remove(c);
+			t.commit();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}
 	}
 	
 	@Override
 	public void updateCustomer(Customer customer) {
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-			em.merge(customer);
-		t.commit();
-		em.close();
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+				em.merge(customer);
+			t.commit();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}
 	}
 	
 }

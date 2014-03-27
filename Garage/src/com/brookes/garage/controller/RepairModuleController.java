@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -149,7 +150,10 @@ public class RepairModuleController implements ActionListener, ListSelectionList
 
 		if (car != null && description.length() > 0) {
 			// Every fields contains a value
-
+			if(description.length()>1000){
+				JOptionPane.showMessageDialog(null, "Description length is too long: "+description.length()+"/255");
+				return;
+			}
 				// The form was a creation form
 				// We create a new repair with the values and save it
 				Repair repair = new Repair();

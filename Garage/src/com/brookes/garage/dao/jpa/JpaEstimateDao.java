@@ -22,38 +22,44 @@ public class JpaEstimateDao implements EstimateDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Estimate> getAllEstimates() {
+		List<Estimate> estimates = null;
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT b FROM Estimate AS b");
-		List<Estimate> estimates = query.getResultList();
-		em.close();
+		try {
+			Query query = em.createQuery("SELECT b FROM Estimate AS b");
+			estimates = query.getResultList();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}
 		return estimates;
 	}
 
 	@Override
 	public void addEstimate(Estimate estimate) {
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		em.persist(estimate);
-		/*
-		List<Part> parts = estimate.getParts();
-		for (Part part : parts) {
-			part.getEstimates().add(estimate);
-			em.merge(part);
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+			em.persist(estimate);
+			t.commit();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
 		}
-		*/
-		t.commit();
-		em.close();
 	}
 
 	@Override
 	public void updateEstimate(Estimate estimate) {
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-			em.merge(estimate);
-		t.commit();
-		em.close();
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+				em.merge(estimate);
+			t.commit();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}
 	}
 
 }

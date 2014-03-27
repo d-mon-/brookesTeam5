@@ -22,21 +22,29 @@ public class JpaCarDao implements CarDao {
 	}
 	
 	@Override
-	public List<Customers_car> getCarsByCustomer(Customer customer) {
+	public List<Customers_car> getCarsByCustomer(Customer customer) {		
+		List<Customers_car> cars = null;
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT c FROM Customers_car AS c WHERE c.customer.id = " + customer.getId());
-		List<Customers_car> cars = query.getResultList();
-		em.close();
+		try {
+			Query query = em.createQuery("SELECT c FROM Customers_car AS c WHERE c.customer.id = " + customer.getId());
+			cars = query.getResultList();			
+		} finally {
+			em.close();			
+		}
 		return cars;
 	}
 	@Override
-	public void addCar(Customers_car car) {
+	public void addCar(Customers_car car) {		
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		em.persist(car);
-		t.commit();
-		em.close();
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+			em.persist(car);
+			t.commit();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}
 	}
 
 	@Override
