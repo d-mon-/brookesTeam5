@@ -18,7 +18,9 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
-
+/**
+ * Allows to add parts to a newly created Estimate
+ */
 public class EstimateFormDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;

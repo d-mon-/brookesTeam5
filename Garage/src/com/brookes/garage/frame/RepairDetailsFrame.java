@@ -8,11 +8,16 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 
+/**
+ * Frame displayed to give details and controls for a specific repair
+ */
 public class RepairDetailsFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -22,7 +27,7 @@ public class RepairDetailsFrame extends JFrame {
 	public JLabel repairLabel;
 	public JLabel statusLabel;
 	public JLabel customerLabel;
-	public JLabel descriptionLabel;
+	public JTextArea descriptionLabel;
 	public JLabel carLabel;
 	public JButton statusButton;
 	private JSplitPane splitPane;
@@ -82,7 +87,13 @@ public class RepairDetailsFrame extends JFrame {
 		gbc_statusButton.gridy = 1;
 		contentPane.add(statusButton, gbc_statusButton);
 		
-		descriptionLabel = new JLabel("Description");
+		descriptionLabel = new JTextArea("Description");
+		descriptionLabel.setColumns(20);
+		descriptionLabel.setFont(UIManager.getFont("Label.font"));
+		descriptionLabel.setLineWrap(true);
+		descriptionLabel.setOpaque(false);
+		descriptionLabel.setWrapStyleWord(true);
+		descriptionLabel.setEditable(false);
 		GridBagConstraints gbc_descriptionLabel = new GridBagConstraints();
 		gbc_descriptionLabel.gridheight = 3;
 		gbc_descriptionLabel.anchor = GridBagConstraints.NORTHEAST;

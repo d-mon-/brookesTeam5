@@ -14,21 +14,30 @@ public class JpaEstimateDao implements EstimateDao {
 
 	private EntityManagerFactory emf;
 
+	/**
+	 * The constructor Method
+	 */
 	public JpaEstimateDao(EntityManagerFactory emf) {
 		super();
 		this.emf=emf;
 	}
 	
+	/**
+	 * Return the list of all estimates
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Estimate> getAllEstimates() {
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT b FROM Estimate AS b");
+		Query query = em.createQuery("SELECT e FROM Estimate AS e");
 		List<Estimate> estimates = query.getResultList();
 		em.close();
 		return estimates;
 	}
 
+	/**
+	 * Add an Estimate to the database
+	 */
 	@Override
 	public void addEstimate(Estimate estimate) {
 		EntityManager em = emf.createEntityManager();
@@ -39,7 +48,10 @@ public class JpaEstimateDao implements EstimateDao {
 		t.commit();
 		em.close();
 	}
-
+	
+	/**
+	 * Update an Estimate in the database
+	 */
 	@Override
 	public void updateEstimate(Estimate estimate) {
 		EntityManager em = emf.createEntityManager();

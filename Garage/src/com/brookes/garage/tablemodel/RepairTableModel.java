@@ -11,7 +11,7 @@ import javax.swing.table.AbstractTableModel;
 import com.brookes.garage.dao.DaoFactory;
 import com.brookes.garage.dao.RepairDao;
 import com.brookes.garage.entity.Customer;
-import com.brookes.garage.entity.Customers_car;
+import com.brookes.garage.entity.CustomersCar;
 import com.brookes.garage.entity.Repair;
 
 public class RepairTableModel extends AbstractTableModel {
@@ -106,11 +106,11 @@ public class RepairTableModel extends AbstractTableModel {
 	 * Refresh the table with the customer's data
 	 */
 	public void refreshTable(Customer customer) {
-		List<Customers_car> cars = customer.getCars();
+		List<CustomersCar> cars = customer.getCars();
 		
 		data = new ArrayList<Repair>();
 		
-		for (Customers_car customers_car : cars) {
+		for (CustomersCar customers_car : cars) {
 			data.addAll(customers_car.getRepairs());
 		}
 		

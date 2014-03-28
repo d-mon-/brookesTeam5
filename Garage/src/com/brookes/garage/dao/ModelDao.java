@@ -11,5 +11,4 @@ public interface ModelDao {
 	public void addModel(Model model);
 	public void removeModel(Model model);
 	public void updateModel(Model model);
-	public void invalidateEntry(Model model);
 }

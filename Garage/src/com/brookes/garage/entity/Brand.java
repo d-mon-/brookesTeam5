@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+/**
+ * A Brand entity represents a car Brand
+ */
 @Entity
 public class Brand {
 	

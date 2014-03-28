@@ -3,6 +3,8 @@ package com.brookes.garage.dao.jpa;
 import java.util.List;
 
 
+
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -18,57 +20,55 @@ public class JpaModelDao implements ModelDao {
 
 	private EntityManagerFactory emf;
 
+	/**
+	 * The constructor method
+	 */
 	public JpaModelDao(EntityManagerFactory emf) {
 		super();
 		this.emf=emf;
 	}
 	
+	/**
+	 * Returns a list of all Model not marked as deleted
+	 */
 	@Override
 	public List<Model> getAllModels() {
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT m FROM Model AS m");
+		Query query = em.createQuery("SELECT m FROM Model AS m  WHERE b.delete_flag=0");
 		List<Model> models = query.getResultList();
 		em.close();
 		return models;
 	}
 
+	/**
+	 * Returns a list of all Model not marked as deleted for a given Brand
+	 */
 	@Override
 	public List<Model> getModelsByBrand(Brand brand) {
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT m FROM Model AS m WHERE m.brand.id = " + brand.getId());
+		
+		Query query = em.createQuery("SELECT m FROM Model AS m WHERE m.delete_flag=0 AND m.brand.id = " + brand.getId());
 		List<Model> models = query.getResultList();
 		em.close();
 		return models;
 	}
 	
+	/**
+	 * Add a Model to the database
+	 */
 	@Override
 	public void addModel(Model model) {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();
 		em.persist(model);
-		/*
-		Brand brand = model.getBrand();
-		List<Model> models = brand.getModels();
-		models.add(model);
-		brand.setModels(models);
-		em.merge(brand);
-		*/
 		t.commit();
 		em.close();
 	}
 
-	@Override
-	public void removeModel(Model model) {
-		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		Model b = em.getReference(Model.class, model.getId());
-		em.remove(b);
-		t.commit();
-		em.close();
-	}
-
+	/**
+	 * Update a Model in the database
+	 */
 	@Override
 	public void updateModel(Model model) {
 		EntityManager em = emf.createEntityManager();
@@ -79,20 +79,23 @@ public class JpaModelDao implements ModelDao {
 		em.close();
 	}
 	
+	/**
+	 * Remove a Model from the database
+	 */
 	@Override
-	public void invalidateEntry(Model model){
-		Part myPart = null;
+	public void removeModel(Model model){
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();
 			Model modelToUpdate = em.find(Model.class, model.getId());
 			modelToUpdate.setDelete_flag(true);			
 			List<Part> parts = modelToUpdate.getParts();
-			for(int j = 0, __l = parts.size(); j<__l;j++){
-				myPart = parts.get(j);
-				myPart.setDelete_flag(true);
-				em.persist(myPart);
+			
+			for (Part part : parts) {
+				part.setDelete_flag(true);
+				em.persist(part);
 			}
+			
 			em.persist(modelToUpdate);
 		t.commit();
 		em.close();	

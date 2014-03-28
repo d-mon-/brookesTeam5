@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+/**
+ * A Part entity represents a car part for a specific car model
+ */
 @Entity
 public class Part {
 	

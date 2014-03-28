@@ -16,7 +16,9 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
-
+/**
+ * The first frame of the Car module. Providing CRUD to brands, models and parts
+ */
 public class CarListFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;

@@ -9,8 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+/**
+ * A CustomersCar entity represents a car (with a specific model and plate number) owned by a customer
+ */
 @Entity
-public class Customers_car {
+public class CustomersCar {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,11 +72,11 @@ public class Customers_car {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null || !(obj instanceof Customers_car)) {
+		if (obj == null || !(obj instanceof CustomersCar)) {
 			return false;
 		}
 	  
-		Customers_car cus = (Customers_car) obj;
+		CustomersCar cus = (CustomersCar) obj;
 	  
 		if (this.getId().equals(cus.getId())) {
 			return true;

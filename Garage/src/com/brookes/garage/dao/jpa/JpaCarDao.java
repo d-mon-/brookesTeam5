@@ -9,39 +9,44 @@ import javax.persistence.Query;
 
 import com.brookes.garage.dao.CarDao;
 import com.brookes.garage.entity.Customer;
-import com.brookes.garage.entity.Customers_car;
+import com.brookes.garage.entity.CustomersCar;
 
 @SuppressWarnings("unchecked")
 public class JpaCarDao implements CarDao {
 
 	private EntityManagerFactory emf;
 
+	/**
+	 * The constructor Method
+	 */
 	public JpaCarDao(EntityManagerFactory emf) {
 		super();
 		this.emf=emf;
 	}
 	
+	/**
+	 * Return the list of cars for a given customer
+	 */
 	@Override
-	public List<Customers_car> getCarsByCustomer(Customer customer) {
+	public List<CustomersCar> getCarsByCustomer(Customer customer) {
 		EntityManager em = emf.createEntityManager();
 		Query query = em.createQuery("SELECT c FROM Customers_car AS c WHERE c.customer.id = " + customer.getId());
-		List<Customers_car> cars = query.getResultList();
+		List<CustomersCar> cars = query.getResultList();
 		em.close();
 		return cars;
 	}
+	
+	/**
+	 * Add a Car to the database
+	 */
 	@Override
-	public void addCar(Customers_car car) {
+	public void addCar(CustomersCar car) {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();
 		em.persist(car);
 		t.commit();
 		em.close();
-	}
-
-	@Override
-	public void updateCar(Customers_car car) {
-		
 	}
 
 }

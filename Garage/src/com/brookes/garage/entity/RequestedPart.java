@@ -7,6 +7,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+/**
+ * A RequestedPart entity represents a car part requested by an estimate.
+ */
 @Entity
 public class RequestedPart {
 

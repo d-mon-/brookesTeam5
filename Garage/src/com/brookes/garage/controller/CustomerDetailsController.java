@@ -12,7 +12,7 @@ import com.brookes.garage.dao.CarDao;
 import com.brookes.garage.dao.DaoFactory;
 import com.brookes.garage.entity.Brand;
 import com.brookes.garage.entity.Customer;
-import com.brookes.garage.entity.Customers_car;
+import com.brookes.garage.entity.CustomersCar;
 import com.brookes.garage.entity.Model;
 import com.brookes.garage.frame.CarFormFrame;
 import com.brookes.garage.frame.CustomerDetailsFrame;
@@ -21,20 +21,25 @@ import com.brookes.garage.tablemodel.RepairTableModel;
 
 public class CustomerDetailsController implements ActionListener {
 
+	// The customer displayed by the view
 	private Customer customer;
-	
+
+	// The views managed by the controller
 	public CustomerDetailsFrame mainFrame;
 	private CarFormFrame carForm;
 
+	// Objects related to data model
 	private CarDao carDao = DaoFactory.getCarDao();
 	private CustomerCarTableModel carTableModel;
 	private RepairTableModel repairTableModel;
 
+
+	/**
+	 * The constructor method
+	 */
 	public CustomerDetailsController() {
 		super();
-
 		this.createPage();
-	
 	}
 
 	/**
@@ -44,13 +49,13 @@ public class CustomerDetailsController implements ActionListener {
 		if (mainFrame == null) {
 			mainFrame = new CustomerDetailsFrame();
 
-			// Set the table model and add itself
+			// Set the table models
 			carTableModel = new CustomerCarTableModel();
 			mainFrame.carTable.setModel(carTableModel);
 
 			repairTableModel = new RepairTableModel();
 			mainFrame.repairTable.setModel(repairTableModel);
-			
+
 			// Add itself as action listener to create, edit and delete a car
 			mainFrame.addCarButton.addActionListener(this);
 		}
@@ -70,11 +75,11 @@ public class CustomerDetailsController implements ActionListener {
 			DefaultComboBoxModel<Model> model = new DefaultComboBoxModel<Model>(array);
 			carForm.modelComboBox.setModel(model);
 			carForm.modelComboBox.setEnabled(true);
-		} else if (e.getSource() == carForm.saveButton) {
+		} else if (e.getSource() == carForm.okButton) {
 			this.saveCustomerCar();
 		}
 	}
-	
+
 	/**
 	 * Add a new car according to a customer and a (Brand->) model
 	 * triggered by the save button
@@ -84,8 +89,8 @@ public class CustomerDetailsController implements ActionListener {
 			//no plate or model defined before save -> pop up "error"
 			JOptionPane.showMessageDialog(null, "You must specify a plate and a model.");
 		}else{
-			//must verify if the plate already exist in the DB
-			Customers_car customer_car = new Customers_car();
+			//must verify if the plate already exist in the database
+			CustomersCar customer_car = new CustomersCar();
 			customer_car.setModel(model);
 			customer_car.setNumber_plate(plate);
 			customer_car.setCustomer(customer);
@@ -93,16 +98,16 @@ public class CustomerDetailsController implements ActionListener {
 			carTableModel.addCar(customer_car);
 			carForm.dispose();
 		}
-		
+
 	}
 
 	/**
-	 * Display the car creation form in a new window. Listen to the action
-	 * triggered by the save button
+	 * Displays the car creation form in a new window.
+	 * Listen to the action triggered by the save button
 	 */
 	public void showCarCreationForm() {
 		carForm = new CarFormFrame();
-		carForm.saveButton.addActionListener(this);
+		carForm.okButton.addActionListener(this);
 
 		List<Brand> brands = DaoFactory.getBrandDao().getAllBrands();
 		Brand[] brandsArray = brands.toArray(new Brand[brands.size()]);
@@ -118,7 +123,7 @@ public class CustomerDetailsController implements ActionListener {
 			carForm.modelComboBox.setModel(secondModel);
 			carForm.modelComboBox.setEnabled(true);
 		}
-		
+
 		carForm.setVisible(true);
 	}
 
@@ -131,17 +136,15 @@ public class CustomerDetailsController implements ActionListener {
 
 		if (model != null && plate_number.length() > 0) {
 			// Every fields contains a value
+			// We create a new car with the values and save it
+			CustomersCar car = new CustomersCar();
+			car.setCustomer(customer);
+			car.setModel(model);
+			car.setNumber_plate(plate_number);
 
-				// The form was a creation form
-				// We create a new customer with the values and save it
-				Customers_car car = new Customers_car();
-				car.setCustomer(customer);
-				car.setModel(model);
-				car.setNumber_plate(plate_number);
-
-				// We add it to the database and our table model
-				carDao.addCar(car);
-				carTableModel.addCar(car);
+			// We add it to the database and our table model
+			carDao.addCar(car);
+			carTableModel.addCar(car);
 
 			// We close the windows
 			carForm.dispose();
@@ -150,12 +153,19 @@ public class CustomerDetailsController implements ActionListener {
 			carForm.noEmptyLabel.setVisible(true);
 		}
 	}
-	
+
+	/**
+	 * Getter for the customer to display
+	 */
 	public Customer getCustomer() {
 		return customer;
 	}
 
+	/**
+	 * Setter for the customer to display
+	 */
 	public void setCustomer(Customer customer) {
+		// We update the interface with the informations from the Customer
 		this.customer = customer;
 		mainFrame.nameLabel.setText(customer.getFirstname() + " " + customer.getLastname());
 		mainFrame.addressLabel.setText(customer.getAddress());
@@ -163,5 +173,5 @@ public class CustomerDetailsController implements ActionListener {
 		carTableModel.refreshTable(customer);
 		repairTableModel.refreshTable(this.customer);
 	}
-	
+
 }

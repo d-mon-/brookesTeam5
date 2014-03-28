@@ -38,6 +38,7 @@ public class Navigation
 	 */
    public Navigation()
    { 	
+	   // We instantiate our three modules controllers
 	   customerModuleController = new CustomerModuleController();
 	   carModuleController = new CarModuleController();
 	   repairModuleController = new RepairModuleController();
@@ -58,7 +59,7 @@ public class Navigation
 		
         // Configure basic values and options for the windows
         appFrame.setContentPane(cPane);
-   		appFrame.setSize(800,700);
+        appFrame.setSize(800,700);
    		appFrame.setResizable(false);
    		appFrame.setVisible(true);
    		appFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -33,12 +33,15 @@ import com.brookes.garage.tablemodel.RequestedPartTableModel;
 
 public class RepairDetailsController implements ActionListener, ListSelectionListener {
 
+	// The repair displayed by the view
 	private Repair repair;
 	
+	// The views managed by the controller
 	public RepairDetailsFrame mainFrame;
 	private StatusFormFrame statusForm;
 	private EstimateFormDialog estimateForm;
 
+	// Objects related to data model
 	private PartTableModel formTableModel = new PartTableModel();
 	private EstimateTableModel estimateTableModel = new EstimateTableModel();
 	private RequestedPartTableModel partTableModel = new RequestedPartTableModel();
@@ -48,8 +51,13 @@ public class RepairDetailsController implements ActionListener, ListSelectionLis
 	private EstimateDao estimateDao = DaoFactory.getEstimateDao();
 	private RequestedPartDao requestedPartDao = DaoFactory.getRequestedPartDao();
 	
+	// Allows to know if we are currently invalidating a repair
 	private Boolean invalidating = false;
 
+	
+	/**
+	 * The constructor method
+	 */
 	public RepairDetailsController() {
 		super();
 
@@ -93,9 +101,14 @@ public class RepairDetailsController implements ActionListener, ListSelectionLis
 		}
 	}
 
+	/**
+	 * Displays a form allowing to modify the status of the repair
+	 */
 	public void showStatusModificationForm() {
 		statusForm = new StatusFormFrame();
 		
+		// The status that the user can choose
+		// are based on the successors of the current repair status
 		List<Status> successors = repair.getStatus().getSuccessors();
 		Status[] array = successors.toArray(new Status[successors.size()]);
 		DefaultComboBoxModel<Status> model = new DefaultComboBoxModel<Status>(array);
@@ -105,14 +118,21 @@ public class RepairDetailsController implements ActionListener, ListSelectionLis
 		statusForm.setVisible(true);
 	}
 	
+	/**
+	 * We save the new status chosen by the user
+	 */
 	public void saveNewStatus() {
 		Status newStatus = (Status)statusForm.statusComboBox.getSelectedItem();
 
 		if (newStatus.getId() == statusDao.getEstimateStatus().getId()) {
+			// If the user chose the status that requires to create an estimate
 			this.displayEstimateForm();
 			statusForm.dispose();
 			return;
 		} else if (newStatus.getId() == statusDao.getInvoiceStatus().getId()) {
+			// If the user chose the status that requires to create an invoice
+			// based on the current estimate
+			
 			List<Estimate>estimates = repair.getEstimates();
 			for (Estimate estimate : estimates) {
 				if (estimate.isInvalidated() == false) {
@@ -130,24 +150,31 @@ public class RepairDetailsController implements ActionListener, ListSelectionLis
 				}
 			}
 		}
-
+		
+		repair.setStatus(newStatus);
+		repairDao.updateRepair(repair);
+		
+		// If the selected status doesn't have successors we disable the button
 		if (newStatus.getSuccessors().size() == 0) {
 			mainFrame.statusButton.setEnabled(false);
 		} else {
 			mainFrame.statusButton.setEnabled(true);
 		}
 		
-		repair.setStatus(newStatus);
-		repairDao.updateRepair(repair);
-			
+		// We change the label displaying the name of the status
 		mainFrame.statusLabel.setText(repair.getStatus().toString());
 
 		statusForm.dispose();
 	}
 	
+	/**
+	 * Displays the form allowing to create an estimate
+	 */
 	public void displayEstimateForm() {
 		estimateForm = new EstimateFormDialog();
 		
+		// We get the list of parts for the model currently being repaired
+		// We display them as choices in a combobox
 		List<Part> parts = DaoFactory.getPartDao().getPartsByModel(repair.getCar().getModel());
 		Part[] array = parts.toArray(new Part[parts.size()]);
 		DefaultComboBoxModel<Part> model = new DefaultComboBoxModel<Part>(array);
@@ -162,20 +189,27 @@ public class RepairDetailsController implements ActionListener, ListSelectionLis
 		estimateForm.setVisible(true);
 	}
 	
+	/**
+	 * The user chose to add a part to the estimate
+	 */
 	public void addPartToEstimate() {
+		// We add the part to our table
 		Part selectedPart = (Part)estimateForm.partComboBox.getSelectedItem();
 		formTableModel.addPart(selectedPart);
 		
+		// We update the total price for the estimate
 		double totalPrice = this.totalPriceForParts(formTableModel.data);
 		String priceString = "Total £"+totalPrice;
 		estimateForm.totalPriceLabel.setText(priceString);
 	}
 	
+	/**
+	 * We save the Estimate to our Repair
+	 */
 	public void addEstimateToRepair() {
-		
 		if (this.invalidating) {
+			// If we were invalidating the previous Estimate we change its state
 			int rowIndex = mainFrame.estimateTable.getSelectedRow();
-
 			Estimate selectedEstimate = estimateTableModel.data.get(rowIndex);
 
 			selectedEstimate.setInvalidated(true);
@@ -185,7 +219,8 @@ public class RepairDetailsController implements ActionListener, ListSelectionLis
 			
 			this.invalidating = false;
 		} else {
-			// First we set the new status to our repair
+			// If we were not invalidating the previous Estimate
+			// We need to set the new status to our repair
 			Status newStatus = (Status)statusForm.statusComboBox.getSelectedItem();
 			repair.setStatus(newStatus);
 			repairDao.updateRepair(repair);
@@ -194,7 +229,7 @@ public class RepairDetailsController implements ActionListener, ListSelectionLis
 		}
 		
 		
-		// We create a new estimate and save it
+		// We create the new estimate and save it
 		Estimate estimate = new Estimate();
 		estimate.setRepair(repair);
 		estimate.setInvalidated(false);		
@@ -205,6 +240,8 @@ public class RepairDetailsController implements ActionListener, ListSelectionLis
 		estimateDao.addEstimate(estimate);
 		estimateTableModel.addEstimate(estimate);
 		
+		// We get the list of Part and create a list of RequestedPart
+		// that we set to our estimate
 		List<Part> parts = formTableModel.data;
 		List<RequestedPart> requestedParts = new ArrayList<RequestedPart>();
 		for (Part part : parts) {
@@ -221,6 +258,9 @@ public class RepairDetailsController implements ActionListener, ListSelectionLis
 		estimateForm.dispose();
 	}
 	
+	/**
+	 * Return the total price for a given list of parts
+	 */
 	public double totalPriceForParts(List<Part> parts) {
 		double totalPrice = 0;
 		
@@ -230,18 +270,29 @@ public class RepairDetailsController implements ActionListener, ListSelectionLis
 		return totalPrice;
 	}
 	
+	/**
+	 * Save that we are invalidating the estimate
+	 * Ask the user for a new Estimate
+	 */
 	public void invalidateCurrentEstimate() {
 		this.invalidating = true;
 		this.displayEstimateForm();
 	}
 	
+	/**
+	 * Getter for the repair to display
+	 */
 	public Repair getRepair() {
 		return repair;
 	}
 
+	/**
+	 * Setter for the repair to display
+	 */
 	public void setRepair(Repair repair) {
 		this.repair = repair;
 		
+		// We update the interface with the informations from the Repair
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		String formattedDate = dateFormat.format(repair.getCreation_date());
 		mainFrame.repairLabel.setText(repair.getIdentifier() + " - " + formattedDate);
@@ -262,6 +313,9 @@ public class RepairDetailsController implements ActionListener, ListSelectionLis
 		estimateTableModel.refreshContent(repair);
 	}
 
+	/**
+	 * The row selected has changed
+	 */
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		if (e.getSource() == mainFrame.estimateTable.getSelectionModel()) {
@@ -274,6 +328,8 @@ public class RepairDetailsController implements ActionListener, ListSelectionLis
 				partTableModel.updateContent(selectedEstimate);
 				
 				if(statusDao.getEstimateStatus().getId() == repair.getStatus().getId()) {
+					// We set the state of the Invalidate button depending on the current state
+					// of the Estimate selected (already invalidated or not)
 					mainFrame.invalidateButton.setEnabled(!selectedEstimate.isInvalidated());				
 				}
 			} else {

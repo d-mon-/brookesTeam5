@@ -12,6 +12,9 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * First frame of the repair module, allows to create edit and list repairs
+ */
 public class RepairListFrame extends JFrame {
 
 private static final long serialVersionUID = 1L;

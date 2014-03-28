@@ -13,7 +13,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 
-
+/**
+ * First frame of the customer module. Provides CRUD operations for customers
+ */
 public class CustomerListFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;

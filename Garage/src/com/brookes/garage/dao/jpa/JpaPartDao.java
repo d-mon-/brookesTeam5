@@ -8,6 +8,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import com.brookes.garage.dao.PartDao;
+import com.brookes.garage.entity.Estimate;
 import com.brookes.garage.entity.Model;
 import com.brookes.garage.entity.Part;
 
@@ -16,29 +17,54 @@ public class JpaPartDao implements PartDao {
 
 	private EntityManagerFactory emf;
 
+	
+	/**
+	 * The constructor method
+	 */
 	public JpaPartDao(EntityManagerFactory emf) {
 		super();
 		this.emf=emf;
 	}
 	
+	/**
+	 * Return a list of all Part not marked as deleted
+	 */
 	@Override
 	public List<Part> getAllParts() {
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT p FROM Part AS p");
+		Query query = em.createQuery("SELECT p FROM Part AS p WHERE p.delete_flag=0");
 		List<Part> parts = query.getResultList();
 		em.close();
 		return parts;
 	}
 
+	/**
+	 * Return a list of all Part not marked as deleted for a given Model
+	 */
 	@Override
 	public List<Part> getPartsByModel(Model model) {
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT p FROM Part AS p WHERE p.model.id = " + model.getId());
+		Query query = em.createQuery("SELECT p FROM Part AS p WHERE p.delete_flag=0 AND p.model.id = " + model.getId());
 		List<Part> parts = query.getResultList();
 		em.close();
 		return parts;
 	}
 	
+	/**
+	 * Return a list of all Part not marked as deleted for a given Estimate
+	 */
+	@Override
+	public List<Part> getPartsByEstimate(Estimate estimate) {
+		EntityManager em = emf.createEntityManager();
+		Query query = em.createQuery("SELECT p FROM Part AS p WHERE p.delete_flag=0 AND p.estimate.id = " + estimate.getId());
+		List<Part> parts = query.getResultList();
+		em.close();
+		return parts;
+	}
+	
+	/**
+	 * Add a Part to the database
+	 */
 	@Override
 	public void addPart(Part part) {
 		EntityManager em = emf.createEntityManager();
@@ -49,17 +75,9 @@ public class JpaPartDao implements PartDao {
 		em.close();
 	}
 
-	@Override
-	public void removePart(Part part) {
-		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		Part b = em.getReference(Part.class, part.getId());
-		em.remove(b);
-		t.commit();
-		em.close();
-	}
-
+	/**
+	 * Update a Part in the database
+	 */
 	@Override
 	public void updatePart(Part part) {
 		EntityManager em = emf.createEntityManager();
@@ -70,8 +88,11 @@ public class JpaPartDao implements PartDao {
 		em.close();
 	}
 	
+	/**
+	 * Remove a Part from the database
+	 */
 	@Override
-	public void invalidateEntry(Part part){
+	public void removePart(Part part){
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();

@@ -20,22 +20,29 @@ import com.brookes.garage.frame.CustomerFormFrame;
 import com.brookes.garage.frame.CustomerListFrame;
 import com.brookes.garage.tablemodel.CustomerTableModel;
 
-public class CustomerModuleController implements ActionListener,
-		ListSelectionListener {
+public class CustomerModuleController implements ActionListener, ListSelectionListener {
 
+	// Identifiers used to switch between the list and the details
     final static String LISTFRAME = "list";
     final static String DETAILSFRAME = "details";
     
+    // The panel managed by the controller
 	public JPanel mainPanel;
 
+	// Different frames and controllers displayed by this module
 	private CustomerListFrame customerListFrame;
 	private CustomerDetailsController customerDetailsController;
 	private CustomerFormFrame customerForm;
 
+	// Data source related objects
 	private CustomerDao customerDao = DaoFactory.getCustomerDao();
 	private CustomerTableModel tableModel;
 	private TableRowSorter<TableModel>  sorter;
 
+	
+	/**
+	 * The constructor method
+	 */
 	public CustomerModuleController() {
 		super();
 
@@ -77,6 +84,7 @@ public class CustomerModuleController implements ActionListener,
 			customerListFrame.deleteButton.addActionListener(this);
 			customerListFrame.viewButton.addActionListener(this);
 			
+			// We setup the filter used by the search field
 			customerListFrame.filterTextField.getDocument().addDocumentListener(
 	                new DocumentListener() {
 	                    public void changedUpdate(DocumentEvent e) {
@@ -92,18 +100,6 @@ public class CustomerModuleController implements ActionListener,
 			
 		}
 	}
-	
-	private void newFilter() {
-		
-        RowFilter<TableModel, Object> rf = null;
-        //If current expression doesn't parse, don't update.
-        try {
-            rf = RowFilter.regexFilter("(?i)"+customerListFrame.filterTextField.getText(), 0,1,2);
-        } catch (java.util.regex.PatternSyntaxException e) {
-            return;
-        }
-        sorter.setRowFilter(rf);
-    }
 
 	/**
 	 * Create the details frame
@@ -111,9 +107,28 @@ public class CustomerModuleController implements ActionListener,
 	private void createDetailsPage() {
 		if (customerDetailsController == null) {
 			customerDetailsController = new CustomerDetailsController();
+			// We listen to the back button so that we know when to go back to the customer list
 			customerDetailsController.mainFrame.backButton.addActionListener(this);
 		}
 	}
+	
+	/**
+	 * Method used to parse the customer table
+	 */
+	private void newFilter() {
+        RowFilter<TableModel, Object> rf = null;
+        
+        try {
+        	// Regex used to filter the firstname, lastname and phone number of the table
+        	// This regex is case insensitive
+        	String filterText = customerListFrame.filterTextField.getText();
+            rf = RowFilter.regexFilter("(?i)"+filterText, 0,1,2);
+        } catch (java.util.regex.PatternSyntaxException e) {
+            //If current expression can't be parsed, don't update.
+            return;
+        }
+        sorter.setRowFilter(rf);
+    }
 	
 	/**
 	 * An action should be performed based on the button triggering it
@@ -128,36 +143,34 @@ public class CustomerModuleController implements ActionListener,
 			this.deleteCustomer();
 		} else if (e.getSource() == customerListFrame.viewButton) {
 			this.showCustomerDetails();
-		} else if (customerForm != null && e.getSource() == customerForm.saveButton) {
+		} else if (customerForm != null && e.getSource() == customerForm.okButton) {
 			this.saveCustomer();
 		} else if (customerDetailsController != null && e.getSource() == customerDetailsController.mainFrame.backButton) {
 			this.goBackToCustomerList();
 		}
 	}
-	
-	
 
 	/**
-	 * Display the customer creation form in a new window Listen to the action
-	 * triggered by the save button
+	 * Displays the customer creation form in a new window 
+	 * Listen to the action triggered by the save button
 	 */
 	public void showCustomerCreationForm() {
 		customerForm = new CustomerFormFrame();
-		customerForm.saveButton.addActionListener(this);
+		customerForm.okButton.addActionListener(this);
 
 		customerForm.setVisible(true);
 	}
 
 	/**
-	 * Displays the customer edition form in a new window It consists of the
-	 * same frame as for creation but already filled-in
+	 * Displays the customer edition form in a new window
+	 * It consists of the same frame as for creation but already filled-in
 	 */
 	public void showCustomerEditionForm() {
 		customerForm = new CustomerFormFrame();
-		customerForm.saveButton.addActionListener(this);
+		customerForm.okButton.addActionListener(this);
 
-		// We get the index of the selected row and retrieve the corresponding
-		// Customer entity
+		// We get the index of the selected row 
+		// and retrieve the corresponding Customer entity
 		int rowIndex = customerListFrame.table.getSelectedRow();
         rowIndex = customerListFrame.table.getRowSorter().convertRowIndexToModel(rowIndex);
 
@@ -174,8 +187,8 @@ public class CustomerModuleController implements ActionListener,
 	}
 
 	/**
-	 * Triggered when the user wish to save a customer in either the creation or
-	 * edition form
+	 * Triggered when the user wish to save a customer 
+	 * in either the creation or edition form
 	 */
 	public void saveCustomer() {
 		String firstname = customerForm.firstnameField.getText();
@@ -209,7 +222,7 @@ public class CustomerModuleController implements ActionListener,
 				customer.setPhone_number(phone);
 				customer.setAddress(address);
 
-				// We add it to the database and our table model
+				// We add it to the database and to our table model
 				customerDao.addCustomer(customer);
 				tableModel.addCustomer(customer);
 			}
@@ -241,8 +254,7 @@ public class CustomerModuleController implements ActionListener,
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		if (e.getSource() == customerListFrame.table.getSelectionModel()) {
-			// Since a row is now selected, we enable the edit, view and delete
-			// button
+			// Since a row is now selected, we enable the edit, view and delete button
 			customerListFrame.editButton.setEnabled(true);
 			customerListFrame.viewButton.setEnabled(true);
 			customerListFrame.deleteButton.setEnabled(true);

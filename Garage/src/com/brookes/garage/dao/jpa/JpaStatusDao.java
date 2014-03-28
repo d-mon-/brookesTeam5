@@ -15,11 +15,17 @@ public class JpaStatusDao implements StatusDao {
 
 	private EntityManagerFactory emf;
 
+	/**
+	 * The constructor method
+	 */
 	public JpaStatusDao(EntityManagerFactory emf) {
 		super();
 		this.emf=emf;
 	}
 	
+	/**
+	 * Return the first status
+	 */
 	@Override
 	public Status getFirstStatus() {
 		EntityManager em = emf.createEntityManager();
@@ -29,6 +35,9 @@ public class JpaStatusDao implements StatusDao {
 		return status;
 	}
 
+	/**
+	 * Return the status requiring to create an estimate
+	 */
 	@Override
 	public Status getEstimateStatus() {
 		EntityManager em = emf.createEntityManager();
@@ -38,6 +47,9 @@ public class JpaStatusDao implements StatusDao {
 		return status;
 	}
 	
+	/**
+	 * Return the status requiring to create an invoice
+	 */
 	@Override
 	public Status getInvoiceStatus() {
 		EntityManager em = emf.createEntityManager();
@@ -47,6 +59,9 @@ public class JpaStatusDao implements StatusDao {
 		return status;
 	}
 	
+	/**
+	 * Initialise the status in the database if there is no status
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public void initialiseStatus() {

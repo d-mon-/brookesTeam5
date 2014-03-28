@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+/**
+ * An Invoice entity is linked to an invoice to represent the fact that it is now "validated"
+ */
 @Entity
 public class Invoice {
 	

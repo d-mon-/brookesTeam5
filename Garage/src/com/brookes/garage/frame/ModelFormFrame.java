@@ -1,87 +1,94 @@
 package com.brookes.garage.frame;
 
-import java.awt.EventQueue;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 
 import com.brookes.garage.entity.Model;
-import java.awt.Color;
 
-public class ModelFormFrame extends JFrame {
+/**
+ * Form allowing to create a new car model by typing its name
+ */
+public class ModelFormFrame extends JDialog {
 
 	private static final long serialVersionUID = 1L;
-		
-	private JPanel contentPane;
-	
+
 	public JTextField nameField;
-	public JButton saveButton;
 	public JLabel noEmptyLabel;
 	
 	private Model model;
 
 	
+	public JButton okButton;
+	
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ModelFormFrame frame = new ModelFormFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		try {
+			StatusFormFrame dialog = new StatusFormFrame();
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
-	 * Create the frame.
+	 * Create the dialog.
 	 */
 	public ModelFormFrame() {
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 340, 99);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		setResizable(false);
+		setBounds(100, 100, 344, 114);
+		getContentPane().setLayout(null);
 		
 		JLabel lblName = new JLabel("Name");
 		lblName.setBounds(13, 16, 36, 16);
-		contentPane.add(lblName);
+		getContentPane().add(lblName);
 		
 		nameField = new JTextField();
 		nameField.setBounds(57, 10, 277, 28);
-		contentPane.add(nameField);
+		getContentPane().add(nameField);
 		nameField.setColumns(10);
-		
-		JButton cancelButton = new JButton("Cancel");
-		cancelButton.setBounds(174, 42, 86, 29);
-		cancelButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
-		contentPane.add(cancelButton);
-		
-		saveButton = new JButton("Save");
-		saveButton.setBounds(254, 42, 86, 29);
-		contentPane.add(saveButton);
-		
+				
 		noEmptyLabel = new JLabel("This field is mandatory.");
 		noEmptyLabel.setForeground(Color.RED);
-		noEmptyLabel.setBounds(13, 47, 149, 16);
-		contentPane.add(noEmptyLabel);
+		noEmptyLabel.setBounds(25, 57, 149, 16);
+		getContentPane().add(noEmptyLabel);
 		noEmptyLabel.setVisible(false);
+		
+		{
+			JPanel buttonPane = new JPanel();
+			buttonPane.setBounds(-35, 48, 369, 33);
+			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			getContentPane().add(buttonPane);
+			{
+				okButton = new JButton("OK");
+				okButton.setActionCommand("OK");
+				buttonPane.add(okButton);
+				getRootPane().setDefaultButton(okButton);
+			}
+			{
+				JButton cancelButton = new JButton("Cancel");
+				cancelButton.setActionCommand("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
+				buttonPane.add(cancelButton);
+			}
+		}
+		noEmptyLabel.setVisible(false);
+		
 	}
 
 	public Model getModel() {
@@ -91,5 +98,4 @@ public class ModelFormFrame extends JFrame {
 	public void setModel(Model model) {
 		this.model = model;
 	}
-
 }

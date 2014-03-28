@@ -12,6 +12,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+/**
+ * A Repair entity represent a uniquely identifiable repair for a customer and (one of) his car
+ */
 @Entity
 public class Repair {
 	
@@ -26,7 +29,7 @@ public class Repair {
 		
 	private String description;
 	
-	private Customers_car car;
+	private CustomersCar car;
 	
 	@OneToMany(mappedBy = "repair")
 	private final List<Estimate> estimates = new ArrayList<Estimate>();
@@ -73,11 +76,11 @@ public class Repair {
 		this.description = description;
 	}
 
-	public Customers_car getCar() {
+	public CustomersCar getCar() {
 		return car;
 	}
 
-	public void setCar(Customers_car car) {
+	public void setCar(CustomersCar car) {
 		this.car = car;
 	}
 

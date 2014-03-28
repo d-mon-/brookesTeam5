@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+/**
+ * Status within the database are predefined and represents the different states of a repair
+ */
 @Entity
 public class Status {
 	

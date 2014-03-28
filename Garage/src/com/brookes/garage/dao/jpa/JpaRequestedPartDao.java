@@ -11,11 +11,17 @@ public class JpaRequestedPartDao implements RequestedPartDao {
 
 	private EntityManagerFactory emf;
 
+	/**
+	 * The constructor method
+	 */
 	public JpaRequestedPartDao(EntityManagerFactory emf) {
 		super();
 		this.emf=emf;
 	}
 	
+	/**
+	 * Add a RequestedPart to the database
+	 */
 	@Override
 	public void addRequestedPart(RequestedPart requestedPart) {
 		EntityManager em = emf.createEntityManager();

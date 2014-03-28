@@ -89,5 +89,9 @@ public class CarModelTableModel extends AbstractTableModel {
 		data = brand.getModels();
 		fireTableDataChanged();
 	}
+	public void clearModelContent() {
+		data = new ArrayList<Model>();
+		fireTableDataChanged();
+	}
 	
 }

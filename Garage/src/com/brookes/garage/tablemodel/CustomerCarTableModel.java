@@ -6,14 +6,14 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import com.brookes.garage.entity.Customer;
-import com.brookes.garage.entity.Customers_car;
+import com.brookes.garage.entity.CustomersCar;
 
 public class CustomerCarTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 
 	// ArrayList of Car to populate the table
-	public List<Customers_car> data = new ArrayList<Customers_car>();
+	public List<CustomersCar> data = new ArrayList<CustomersCar>();
 	// The columns titles
 	private final String[] titles = { "Brand", "Model", "Plate Number" };
 
@@ -68,7 +68,7 @@ public class CustomerCarTableModel extends AbstractTableModel {
 	/**
 	 * Add a Car to the list and add the appropriate row
 	 */
-	public void addCar(Customers_car car) {
+	public void addCar(CustomersCar car) {
 		data.add(car);
 		fireTableRowsInserted(data.size() - 1, data.size() - 1);
 	}

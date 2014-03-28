@@ -14,11 +14,17 @@ public class JpaInvoiceDao implements InvoiceDao {
 
 	private EntityManagerFactory emf;
 
+	/**
+	 * The constructor Method
+	 */
 	public JpaInvoiceDao(EntityManagerFactory emf) {
 		super();
 		this.emf=emf;
 	}
 	
+	/**
+	 * Return a list of all Invoice
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Invoice> getAllInvoices() {
@@ -29,6 +35,9 @@ public class JpaInvoiceDao implements InvoiceDao {
 		return invoices;
 	}
 
+	/**
+	 * Add an Invoice to the database
+	 */
 	@Override
 	public void addInvoice(Invoice invoice) {
 		EntityManager em = emf.createEntityManager();
@@ -39,6 +48,9 @@ public class JpaInvoiceDao implements InvoiceDao {
 		em.close();
 	}
 
+	/**
+	 * Update an Invoice in the database
+	 */
 	@Override
 	public void updateInvoice(Invoice invoice) {
 		EntityManager em = emf.createEntityManager();

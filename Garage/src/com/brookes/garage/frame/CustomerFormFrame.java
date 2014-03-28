@@ -1,68 +1,58 @@
 package com.brookes.garage.frame;
-import java.awt.EventQueue;
+
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
-import javax.swing.border.EmptyBorder;
 
 import com.brookes.garage.entity.Customer;
 
-import java.awt.Color;
-
-
-public class CustomerFormFrame extends JFrame {
+/**
+ * Form allowing to create a customer
+ */
+public class CustomerFormFrame extends JDialog {
 
 	private static final long serialVersionUID = 1L;
-	
-	private JPanel contentPane;
 	public JTextField firstnameField;
 	public JTextField lastnameField;
 	public JTextField phoneField;
 	public JTextArea addressField;
 	
-	public JLabel noEmptyLabel;
-	
-	public JButton cancelButton;
-	public JButton saveButton;
-	
 	private Customer customer;
 	
-
+	public JLabel noEmptyLabel;
+	
+	public JButton okButton;
+	
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					CustomerFormFrame frame = new CustomerFormFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		try {
+			StatusFormFrame dialog = new StatusFormFrame();
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
-	 * Create the frame.
+	 * Create the dialog.
 	 */
 	public CustomerFormFrame() {
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		
-		setBounds(100, 100, 329, 239);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		setResizable(false);
+		setBounds(100, 100, 337, 247);
+		getContentPane().setLayout(null);
 		
 		JLabel lblFirstname = new JLabel("Firstname");
 		lblFirstname.setBounds(35, 11, 62, 16);
@@ -94,40 +84,52 @@ public class CustomerFormFrame extends JFrame {
 		lblAddress.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		addressField = new JTextArea(4, 5);
-		
-		addressField.setBounds(102, 104, 222, 72);
-		addressField.setColumns(13);
-		
-		cancelButton = new JButton("Cancel");
-		cancelButton.setBounds(8, 182, 86, 29);
-		cancelButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
-		
-		saveButton = new JButton("Save");
-		saveButton.setBounds(100, 182, 75, 29);
-		saveButton.setHorizontalAlignment(SwingConstants.LEFT);
+		JScrollPane scrollPane = new JScrollPane(addressField);
+		scrollPane.setBounds(102, 104, 222, 72);
+		addressField.setLineWrap(true);
+		addressField.setWrapStyleWord(true);
 		
 		noEmptyLabel = new JLabel("No field can be empty");
 		noEmptyLabel.setForeground(Color.RED);
-		noEmptyLabel.setBounds(181, 187, 138, 16);
+		noEmptyLabel.setBounds(171, 188, 138, 16);
 		noEmptyLabel.setVisible(false);
 		
-		contentPane.setLayout(null);
-		contentPane.add(lblFirstname);
-		contentPane.add(firstnameField);
-		contentPane.add(lblLastname);
-		contentPane.add(lastnameField);
-		contentPane.add(lblPhoneNumber);
-		contentPane.add(phoneField);
-		contentPane.add(lblAddress);
-		contentPane.add(addressField);
-		contentPane.add(cancelButton);
-		contentPane.add(saveButton);
-		contentPane.add(noEmptyLabel);
+		getContentPane().add(lblFirstname);
+		getContentPane().add(firstnameField);
+		getContentPane().add(lblLastname);
+		getContentPane().add(lastnameField);
+		getContentPane().add(lblPhoneNumber);
+		getContentPane().add(phoneField);
+		getContentPane().add(lblAddress);
+		getContentPane().add(scrollPane);
+		getContentPane().add(noEmptyLabel);
+		
+		{
+			JPanel buttonPane = new JPanel();
+			buttonPane.setBounds(3, 180, 369, 33);
+			buttonPane.setLayout(new FlowLayout(FlowLayout.LEFT));
+			getContentPane().add(buttonPane);
+			{
+				JButton cancelButton = new JButton("Cancel");
+				cancelButton.setActionCommand("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
+				buttonPane.add(cancelButton);
+			}
+			{
+				okButton = new JButton("OK");
+				okButton.setActionCommand("OK");
+				buttonPane.add(okButton);
+				getRootPane().setDefaultButton(okButton);
+			}
+			
+		}
+		noEmptyLabel.setVisible(false);
+		
 	}
 	
 	public Customer getCustomer() {
@@ -137,4 +139,5 @@ public class CustomerFormFrame extends JFrame {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
+	
 }

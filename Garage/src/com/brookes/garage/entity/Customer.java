@@ -9,7 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-
+/**
+ * A Customer entity represents a customer of the garage
+ */
 @Entity
 public class Customer {
 	
@@ -25,8 +27,11 @@ public class Customer {
 	
 	private String address;
 	
+	private boolean deleted;
+	
+
 	@OneToMany(mappedBy = "customer")
-	private final List<Customers_car> cars = new ArrayList<Customers_car>();
+	private final List<CustomersCar> cars = new ArrayList<CustomersCar>();
 	
 	
 	public Long getId() {
@@ -69,7 +74,7 @@ public class Customer {
 		this.address = address;
 	}
 
-	public List<Customers_car> getCars() {
+	public List<CustomersCar> getCars() {
 		return cars;
 	}
 
@@ -91,5 +96,13 @@ public class Customer {
 		}
 	  
 		return false;
+	}
+	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 }

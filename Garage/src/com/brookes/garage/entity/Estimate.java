@@ -13,6 +13,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+/**
+ * An Estimate entity is linked to a repair and to the requested car parts
+ */
 @Entity
 public class Estimate {
 	

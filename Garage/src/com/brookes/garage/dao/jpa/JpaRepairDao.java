@@ -14,11 +14,17 @@ public class JpaRepairDao implements RepairDao {
 
 	private EntityManagerFactory emf;
 
+	/**
+	 * The constructor method
+	 */
 	public JpaRepairDao(EntityManagerFactory emf) {
 		super();
 		this.emf=emf;
 	}
 	
+	/**
+	 * Return a list of all Repair
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Repair> getAllRepairs() {
@@ -29,6 +35,9 @@ public class JpaRepairDao implements RepairDao {
 		return repairs;
 	}
 
+	/**
+	 * Add a Repair to the database
+	 */
 	@Override
 	public void addRepair(Repair repair) {
 		EntityManager em = emf.createEntityManager();
@@ -39,6 +48,9 @@ public class JpaRepairDao implements RepairDao {
 		em.close();
 	}
 
+	/**
+	 * Update a Repair in the database
+	 */
 	@Override
 	public void updateRepair(Repair repair) {
 		EntityManager em = emf.createEntityManager();

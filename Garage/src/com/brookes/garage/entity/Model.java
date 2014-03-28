@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+/**
+ * A Model entity represents a specific car model from a car brand
+ */
 @Entity
 public class Model {
 	
@@ -26,7 +29,7 @@ public class Model {
 	private final List<Part> parts = new ArrayList<Part>();
 	
 	@OneToMany(mappedBy = "model")
-	private final List<Customers_car> cars = new ArrayList<Customers_car>();
+	private final List<CustomersCar> cars = new ArrayList<CustomersCar>();
 
 	
 	public Long getId() {
@@ -57,7 +60,7 @@ public class Model {
 		return parts;
 	}
 
-	public List<Customers_car> getCars() {
+	public List<CustomersCar> getCars() {
 		return cars;
 	}
 	
