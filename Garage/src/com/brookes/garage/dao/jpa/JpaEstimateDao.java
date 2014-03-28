@@ -55,11 +55,15 @@ public class JpaEstimateDao implements EstimateDao {
 	@Override
 	public void updateEstimate(Estimate estimate) {
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-			em.merge(estimate);
-		t.commit();
-		em.close();
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+				em.merge(estimate);
+			t.commit();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}
 	}
 
 }

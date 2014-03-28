@@ -38,11 +38,15 @@ public class JpaCustomerDao implements CustomerDao {
 	@Override
 	public void addCustomer(Customer customer) {
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		em.persist(customer);
-		t.commit();
-		em.close();
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+			em.persist(customer);
+			t.commit();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}
 	}
 	
 	/**
@@ -65,11 +69,15 @@ public class JpaCustomerDao implements CustomerDao {
 	@Override
 	public void updateCustomer(Customer customer) {
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-			em.merge(customer);
-		t.commit();
-		em.close();
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+				em.merge(customer);
+			t.commit();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}
 	}
 	
 }

@@ -28,9 +28,9 @@ public class JpaCarDao implements CarDao {
 	 * Return the list of cars for a given customer
 	 */
 	@Override
-	public List<CustomersCar> getCarsByCustomer(Customer customer) {
+	public List<CustomersCar> getCarsByCustomer(Customer customer) {	
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT c FROM Customers_car AS c WHERE c.customer.id = " + customer.getId());
+		Query query = em.createQuery("SELECT c FROM CustomersCar AS c WHERE c.customer.id = " + customer.getId());
 		List<CustomersCar> cars = query.getResultList();
 		em.close();
 		return cars;

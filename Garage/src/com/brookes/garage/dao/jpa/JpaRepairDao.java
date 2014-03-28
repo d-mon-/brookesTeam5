@@ -28,10 +28,14 @@ public class JpaRepairDao implements RepairDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Repair> getAllRepairs() {
+		List<Repair> repairs = null;
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT r FROM Repair AS r");
-		List<Repair> repairs = query.getResultList();
-		em.close();
+		try {
+			Query query = em.createQuery("SELECT r FROM Repair AS r");
+			 repairs = query.getResultList();
+		} finally {
+			em.close();			
+		}
 		return repairs;
 	}
 
@@ -39,26 +43,34 @@ public class JpaRepairDao implements RepairDao {
 	 * Add a Repair to the database
 	 */
 	@Override
-	public void addRepair(Repair repair) {
+	public void addRepair(Repair repair) {		
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		em.persist(repair);
-		t.commit();
-		em.close();
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+			em.persist(repair);
+			t.commit();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}
 	}
 
 	/**
 	 * Update a Repair in the database
 	 */
 	@Override
-	public void updateRepair(Repair repair) {
+	public void updateRepair(Repair repair) {		
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-			em.merge(repair);
-		t.commit();
-		em.close();
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+				em.merge(repair);
+			t.commit();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}
 	}
 
 }

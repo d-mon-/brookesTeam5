@@ -27,11 +27,15 @@ public class JpaInvoiceDao implements InvoiceDao {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Invoice> getAllInvoices() {
+	public List<Invoice> getAllInvoices() {		
+		List<Invoice> invoices = null;
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT b FROM Invoice AS b");
-		List<Invoice> invoices = query.getResultList();
-		em.close();
+		try {
+			Query query = em.createQuery("SELECT b FROM Invoice AS b");
+			invoices = query.getResultList();
+		} finally {
+			em.close();			
+		}
 		return invoices;
 	}
 
@@ -39,13 +43,17 @@ public class JpaInvoiceDao implements InvoiceDao {
 	 * Add an Invoice to the database
 	 */
 	@Override
-	public void addInvoice(Invoice invoice) {
+	public void addInvoice(Invoice invoice) {		
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		em.persist(invoice);
-		t.commit();
-		em.close();
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+			em.persist(invoice);
+			t.commit();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}
 	}
 
 	/**
@@ -54,11 +62,15 @@ public class JpaInvoiceDao implements InvoiceDao {
 	@Override
 	public void updateInvoice(Invoice invoice) {
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-			em.merge(invoice);
-		t.commit();
-		em.close();
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+				em.merge(invoice);
+			t.commit();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}
 	}
 
 }

@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -190,6 +191,7 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 		brandForm.setVisible(true);
 	}
 
+				
 	/**
 	 * Triggered when the user wishes to save a brand 
 	 * in either the creation or edition form
@@ -197,6 +199,11 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 	public void saveBrand() {
 		String name = brandForm.nameField.getText();
 
+		if(name.length()>255){
+			JOptionPane.showMessageDialog(null, "Name length is too long: "+name.length()+"/255");
+			return;
+		}
+		
 		if (name.length() > 0) {
 			// The Name field must contain a value
 
@@ -283,6 +290,11 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 	public void saveModel() {
 		String name = modelForm.nameField.getText();
 
+		if(name.length()>255){
+			JOptionPane.showMessageDialog(null, "Name length is too long: "+name.length()+"/255");
+			return;
+		}
+		
 		if (name.length() > 0) {
 			// The Name field must contain a value
 
@@ -375,6 +387,16 @@ public class CarModuleController implements ActionListener,ListSelectionListener
 		String name = partForm.nameField.getText();
 		String ref = partForm.refField.getText();
 		String price = partForm.priceField.getText();		
+				
+				if(name.length()>255){
+					JOptionPane.showMessageDialog(null, "Name length is too long: "+name.length()+"/255");
+					return;
+				}
+				if(ref.length()>255){
+					JOptionPane.showMessageDialog(null, "Reference length is too long: "+ref.length()+"/255");
+					return;
+				}
+				
 
 		if (name.length() > 0 && ref.length() > 0 && price.length() > 0) {
 			// The Reference, name and price fields must contain a value

@@ -31,12 +31,16 @@ public class JpaBrandDao implements BrandDao {
 	 */
 	@Override
 	public List<Brand> getAllBrands() {
+		List<Brand> brands = null;
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT b FROM Brand AS b  WHERE b.delete_flag=0");
-		List<Brand> brands = query.getResultList();	
-		brands = reduce(brands);
-		em.close();	
-		
+		try {
+			Query query = em.createQuery("SELECT b FROM Brand AS b  WHERE b.delete_flag=0");
+			brands = query.getResultList();	
+			brands = reduce(brands);
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}		
 		return brands;
 	}
 	
@@ -76,24 +80,32 @@ public class JpaBrandDao implements BrandDao {
 	@Override
 	public void addBrand(Brand brand) {
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		em.persist(brand);
-		t.commit();
-		em.close();
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+			em.persist(brand);
+			t.commit();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}		
 	}
 
 	/**
 	 * Update a Brand in the database
 	 */
 	@Override
-	public void updateBrand(Brand brand) {
+	public void updateBrand(Brand brand) {		
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
 			em.merge(brand);
-		t.commit();
-		em.close();
+			t.commit();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}	
 	}
 	
 	/**
@@ -104,25 +116,29 @@ public class JpaBrandDao implements BrandDao {
 		Model myModel = null;
 		Part myPart = null;
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-			Brand brandToUpdate = em.find(Brand.class, brand.getId());
-			brandToUpdate.setDelete_flag(true);			
-			List<Model> models = brandToUpdate.getModels();
-			for(int i = 0, _l = models.size(); i<_l;i++){
-				myModel = models.get(i);
-				myModel.setDelete_flag(true);
-				List<Part> parts = myModel.getParts();
-				for(int j = 0, __l = parts.size(); j<__l;j++){
-					myPart = parts.get(j);
-					myPart.setDelete_flag(true);
-					em.persist(myPart);
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+				Brand brandToUpdate = em.find(Brand.class, brand.getId());
+				brandToUpdate.setDelete_flag(true);			
+				List<Model> models = brandToUpdate.getModels();
+				for(int i = 0, _l = models.size(); i<_l;i++){
+					myModel = models.get(i);
+					myModel.setDelete_flag(true);
+					List<Part> parts = myModel.getParts();
+					for(int j = 0, __l = parts.size(); j<__l;j++){
+						myPart = parts.get(j);
+						myPart.setDelete_flag(true);
+						em.persist(myPart);
+					}
+					em.persist(myModel);
 				}
-				em.persist(myModel);
-			}
-			em.persist(brandToUpdate);
-		t.commit();
-		em.close();	
+				em.persist(brandToUpdate);
+			t.commit();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}
 	}
 
 }

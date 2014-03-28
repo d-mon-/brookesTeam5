@@ -30,11 +30,15 @@ public class JpaPartDao implements PartDao {
 	 * Return a list of all Part not marked as deleted
 	 */
 	@Override
-	public List<Part> getAllParts() {
+	public List<Part> getAllParts() {		
+		List<Part> parts = null;
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT p FROM Part AS p WHERE p.delete_flag=0");
-		List<Part> parts = query.getResultList();
-		em.close();
+		try {
+			Query query = em.createQuery("SELECT p FROM Part AS p WHERE p.delete_flag=0");
+			parts = query.getResultList();
+		} finally {
+			em.close();			
+		}
 		return parts;
 	}
 
@@ -42,11 +46,15 @@ public class JpaPartDao implements PartDao {
 	 * Return a list of all Part not marked as deleted for a given Model
 	 */
 	@Override
-	public List<Part> getPartsByModel(Model model) {
+	public List<Part> getPartsByModel(Model model) {		
+		List<Part> parts = null;
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT p FROM Part AS p WHERE p.delete_flag=0 AND p.model.id = " + model.getId());
-		List<Part> parts = query.getResultList();
-		em.close();
+		try {
+			Query query = em.createQuery("SELECT p FROM Part AS p WHERE p.delete_flag=0 AND p.model.id = " + model.getId());
+			parts = query.getResultList();
+		} finally {
+			em.close();			
+		}
 		return parts;
 	}
 	
@@ -55,10 +63,14 @@ public class JpaPartDao implements PartDao {
 	 */
 	@Override
 	public List<Part> getPartsByEstimate(Estimate estimate) {
+		List<Part> parts = null;
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT p FROM Part AS p WHERE p.delete_flag=0 AND p.estimate.id = " + estimate.getId());
-		List<Part> parts = query.getResultList();
-		em.close();
+		try {
+			Query query = em.createQuery("SELECT p FROM Part AS p WHERE p.delete_flag=0 AND p.estimate.id = " + estimate.getId());
+			parts = query.getResultList();
+		} finally {
+			em.close();			
+		}
 		return parts;
 	}
 	
@@ -66,13 +78,17 @@ public class JpaPartDao implements PartDao {
 	 * Add a Part to the database
 	 */
 	@Override
-	public void addPart(Part part) {
+	public void addPart(Part part) {		
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		em.persist(part);
-		t.commit();
-		em.close();
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+			em.persist(part);
+			t.commit();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}
 	}
 
 	/**
@@ -81,11 +97,15 @@ public class JpaPartDao implements PartDao {
 	@Override
 	public void updatePart(Part part) {
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-			em.merge(part);
-		t.commit();
-		em.close();
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+				em.merge(part);
+			t.commit();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}
 	}
 	
 	/**
@@ -94,12 +114,16 @@ public class JpaPartDao implements PartDao {
 	@Override
 	public void removePart(Part part){
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-			Part partToUpdate = em.find(Part.class, part.getId());
-			partToUpdate.setDelete_flag(true);		
-			em.persist(partToUpdate);
-		t.commit();
-		em.close();	
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+				Part partToUpdate = em.find(Part.class, part.getId());
+				partToUpdate.setDelete_flag(true);		
+				em.persist(partToUpdate);
+			t.commit();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}
 	}
 }

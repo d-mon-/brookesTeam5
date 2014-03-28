@@ -2,9 +2,6 @@ package com.brookes.garage.dao.jpa;
 
 import java.util.List;
 
-
-
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -33,10 +30,14 @@ public class JpaModelDao implements ModelDao {
 	 */
 	@Override
 	public List<Model> getAllModels() {
+		List<Model> models = null;
 		EntityManager em = emf.createEntityManager();
-		Query query = em.createQuery("SELECT m FROM Model AS m  WHERE b.delete_flag=0");
-		List<Model> models = query.getResultList();
-		em.close();
+		try {
+			Query query = em.createQuery("SELECT m FROM Model AS m  WHERE b.delete_flag=0");
+			models = query.getResultList();
+		} finally {
+			em.close();			
+		}
 		return models;
 	}
 
@@ -45,11 +46,14 @@ public class JpaModelDao implements ModelDao {
 	 */
 	@Override
 	public List<Model> getModelsByBrand(Brand brand) {
+		List<Model> models =  null;
 		EntityManager em = emf.createEntityManager();
-		
-		Query query = em.createQuery("SELECT m FROM Model AS m WHERE m.delete_flag=0 AND m.brand.id = " + brand.getId());
-		List<Model> models = query.getResultList();
-		em.close();
+		try {
+			Query query = em.createQuery("SELECT m FROM Model AS m WHERE m.delete_flag=0 AND m.brand.id = " + brand.getId());
+			models = query.getResultList();
+		} finally {
+			em.close();			
+		}
 		return models;
 	}
 	
@@ -72,11 +76,15 @@ public class JpaModelDao implements ModelDao {
 	@Override
 	public void updateModel(Model model) {
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-			em.merge(model);
-		t.commit();
-		em.close();
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
+			em.persist(model);
+			t.commit();
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}
 	}
 	
 	/**
@@ -85,8 +93,9 @@ public class JpaModelDao implements ModelDao {
 	@Override
 	public void removeModel(Model model){
 		EntityManager em = emf.createEntityManager();
-		EntityTransaction t = em.getTransaction();
-		t.begin();
+		try {
+			EntityTransaction t = em.getTransaction();
+			t.begin();
 			Model modelToUpdate = em.find(Model.class, model.getId());
 			modelToUpdate.setDelete_flag(true);			
 			List<Part> parts = modelToUpdate.getParts();
@@ -98,7 +107,10 @@ public class JpaModelDao implements ModelDao {
 			
 			em.persist(modelToUpdate);
 		t.commit();
-		em.close();	
+		} finally {
+			if(em.getTransaction().isActive()) em.getTransaction().rollback();
+			em.close();			
+		}
 	}
 
 }

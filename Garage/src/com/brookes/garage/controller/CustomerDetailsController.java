@@ -7,7 +7,6 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
-//github.com/d-mon-/brookesTeam5.git
 import com.brookes.garage.dao.CarDao;
 import com.brookes.garage.dao.DaoFactory;
 import com.brookes.garage.entity.Brand;
@@ -136,6 +135,12 @@ public class CustomerDetailsController implements ActionListener {
 
 		if (model != null && plate_number.length() > 0) {
 			// Every fields contains a value
+			
+			if(plate_number.length()>255){
+				JOptionPane.showMessageDialog(null, "Plate number length is too long: "+plate_number.length()+"/255");
+				return;
+			}
+				
 			// We create a new car with the values and save it
 			CustomersCar car = new CustomersCar();
 			car.setCustomer(customer);
